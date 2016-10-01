@@ -1,9 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\Form;
 
 use Yii;
 use yii\base\Model;
+use app\models\User;
 
 /**
  * LoginForm is the model behind the login form.
@@ -13,7 +14,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $userid;
     public $password;
     public $rememberMe = true;
 
@@ -27,7 +28,9 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['userid', 'password'], 'required'],
+            [['userid'], 'integer','min' => '100000', 'max' => '10000000000'],
+            [['password'], 'string','min' => '6', 'max' => '12'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -37,8 +40,6 @@ class LoginForm extends Model
 
     /**
      * Validates the password.
-     * This method serves as the inline validation for password.
-     *
      * @param string $attribute the attribute currently being validated
      * @param array $params the additional name-value pairs given in the rule
      */
@@ -46,13 +47,40 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            Yii::trace($this->password);
+            if (!$user || !$this->checkPassword($this->password)) {
+                $this->addError($attribute, '请检查工号/学号和密码');
             }
         }
     }
+    
+    public function checkPassword($password)
+    {
+        if($password != NULL){
+            $model = $this->getUser();
+            if(md5($password) == $model->user_password){
+                 return true;
+            }else{
+                return false;
+            } 
+        }else{
+            return false;
+        }
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'userid' => '学号/工号',
+            'password' => '密码',
+            'rememberMe' => '记住我'
+        ];
+    }
+    
+    
     /**
      * Logs in a user using the provided username and password.
      * @return boolean whether the user is logged in successfully
@@ -73,7 +101,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findIdentity($this->userid);
         }
 
         return $this->_user;

@@ -6,8 +6,10 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
+use app\models\Form\LoginForm;
 use app\models\ContactForm;
+use app\models\Form\SignupForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -93,6 +95,39 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    
+    public function actionSignup()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user = new User();
+            $user->user_number = $model->userid;
+            $user->user_name = $model->username;
+            $user->user_password = $model->password;
+            $user->save();
+            //设置角色
+            if($model->isteacher == TRUE){
+                 $auth = Yii::$app->authManager;
+                 $userRole = $auth->getRole('nochecked_teacher');
+                 $auth->assign($userRole, $user->user_number);
+            }else{
+                 $auth = Yii::$app->authManager;
+                 $userRole = $auth->getRole('student');
+                 $auth->assign($userRole, $user->user_number);
+            }
+            $identity = User::findOne($user->user_number);
+            Yii::$app->user->login($identity, 0);
+            Yii::$app->session->setFlash('success', "注册成功");
+            //return $this->goBack();
+        }
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
 
     /**
