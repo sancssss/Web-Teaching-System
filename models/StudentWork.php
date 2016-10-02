@@ -15,7 +15,7 @@ use Yii;
  *
  * @property User $userNumber
  * @property SworkTwork[] $sworkTworks
- * @property TeacherWork[] $tworks
+ * @property TeacherWork $tworks
  */
 class StudentWork extends \yii\db\ActiveRecord
 {
@@ -34,9 +34,7 @@ class StudentWork extends \yii\db\ActiveRecord
     {
         return [
             [['swork_content'], 'string'],
-            [['user_number'], 'required'],
-            [['user_number'], 'integer'],
-            [['swork_title', 'swork_date'], 'string', 'max' => 255],
+            [['swork_title'], 'string', 'max' => 255],
             [['user_number'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_number' => 'user_number']],
         ];
     }
@@ -51,8 +49,21 @@ class StudentWork extends \yii\db\ActiveRecord
             'swork_title' => '作业题目',
             'swork_content' => '作业答案',
             'swork_date' => '提交时间',
-            'user_number' => '提交者',
+            'user_number' => '提交者ID',
         ];
+    }
+    /**
+     * @return boolean 
+     * 检查新提交作业时是否重复提交
+     */
+    public function checkCanCreate($tworkid, $usernumber)
+    {
+        $teacherWork = new TeacherWork();
+        if(TeacherWork::find()->where(['twork_id' => $tworkid])->one() == NULL ||   SworkTwork::find()->joinWith('swork')->where(['twork_id' => $tworkid, 'user_number' => $usernumber])->count() > 0){
+            return FALSE; 
+        }else{
+            return TRUE;
+        }
     }
 
     /**
@@ -76,6 +87,6 @@ class StudentWork extends \yii\db\ActiveRecord
      */
     public function getTworks()
     {
-        return $this->hasMany(TeacherWork::className(), ['twork_id' => 'twork_id'])->viaTable('swork_twork', ['swork_id' => 'swork_id']);
+        return $this->hasOne(TeacherWork::className(), ['twork_id' => 'twork_id'])->viaTable('swork_twork', ['swork_id' => 'swork_id']);
     }
 }

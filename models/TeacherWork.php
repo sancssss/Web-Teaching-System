@@ -35,8 +35,7 @@ class TeacherWork extends \yii\db\ActiveRecord
         return [
             [['twork_title', 'twork_content', 'twork_date', 'user_number'], 'required'],
             [['twork_content'], 'string'],
-            [['user_number'], 'integer'],
-            [['twork_title', 'twork_date'], 'string', 'max' => 255],
+            [['twork_title'], 'string', 'max' => 255],
             [['user_number'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_number' => 'user_number']],
         ];
     }
@@ -51,7 +50,7 @@ class TeacherWork extends \yii\db\ActiveRecord
             'twork_title' => '作业题目',
             'twork_content' => '作业要求',
             'twork_date' => ' 发布时间',
-            'user_number' => '发布者',
+            'user_number' => '发布者ID',
         ];
     }
 
