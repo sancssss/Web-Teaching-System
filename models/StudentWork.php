@@ -52,14 +52,20 @@ class StudentWork extends \yii\db\ActiveRecord
             'user_number' => '提交者ID',
         ];
     }
+    //TODO sql优化
     /**
      * @return boolean 
      * 检查新提交作业时是否重复提交
      */
     public function checkCanCreate($tworkid, $usernumber)
     {
-        $teacherWork = new TeacherWork();
-        if(TeacherWork::find()->where(['twork_id' => $tworkid])->one() == NULL ||   SworkTwork::find()->joinWith('swork')->where(['twork_id' => $tworkid, 'user_number' => $usernumber])->count() > 0){
+        //tworkid存在返回true
+        $isTworkidExist = TeacherWork::find()->where(['twork_id' => $tworkid])->one() != NULL;
+        //重复提交返回true
+        $isRepeatSubmit = SworkTwork::find()->joinWith('swork')->where(['twork_id' => $tworkid, 'user_number' => $usernumber])->count() > 0;
+        //师生归属正确返回true且必须为确认了的学生
+        $isBelong = StudentTeacher::find()->join('INNER JOIN', 'teacher_work', 'student_teacher.teacher_number = teacher_work.user_number')->where(['twork_id' => $tworkid, 'student_number' => $usernumber, 'verified' => 1])->count() > 0;
+        if(!$isTworkidExist || $isRepeatSubmit || !$isBelong){
             return FALSE; 
         }else{
             return TRUE;

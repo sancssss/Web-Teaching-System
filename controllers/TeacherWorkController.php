@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\TeacherWork;
-use app\models\TeacherWorkSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -49,11 +49,18 @@ class TeacherWorkController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TeacherWorkSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$searchModel = new TeacherWorkSearch();
+       // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $query = TeacherWork::find()->where(['user_number' => Yii::$app->user->getId()]);
+         $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

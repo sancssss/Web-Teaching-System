@@ -77,4 +77,12 @@ class TeacherWork extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['user_number' => 'user_number']);
     }
+    
+    /**
+     * @return integer 每个作业对应的提交学生数量
+     */
+    public function getSubmitCount()
+    {
+        return $this->getSworkTworks()->count();
+    }
 }

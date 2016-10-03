@@ -11,7 +11,8 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use \app\models\Form\SWorkForm;
 use \app\models\SworkTwork;
-
+use app\models\TeacherWork;
+use yii\data\Pagination;
 /**
  * StudentWorkController implements the CRUD actions for StudentWork model.
  */
@@ -80,7 +81,6 @@ class StudentWorkController extends Controller
     public function actionCreate($tworkid)
     {        
         $model = new SWorkForm();
-
        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $studentWork = new StudentWork();
             $sworkTwork = new SworkTwork();
@@ -134,6 +134,41 @@ class StudentWorkController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * 显示学生所选老师的作业,为0时显示全部选课老师作业
+     * @param integer $teacherid为老师的id
+     * @return mixed
+     */
+    public function actionShowWorks($teacherid=0)
+    {
+        if($teacherid == 0){
+            //得到当前学生授权老师的全部作业
+            $model = TeacherWork::find()
+                    ->join('INNER JOIN', 'student_teacher', 'student_teacher.teacher_number = teacher_work.user_number')
+                    ->where(['student_number' => Yii::$app->user->getId(), 'verified' => 1]);
+        }else{
+            //得到当前学生指定的授权老师的全部作业
+            $model = TeacherWork::find()
+                    ->join('INNER JOIN', 'student_teacher', 'student_teacher.teacher_number = teacher_work.user_number')
+                    ->where(['student_number' => Yii::$app->user->getId(), 'teacher_number' => $teacherid, 'verified' => 1]);
+        }
+        
+        $pagination = new Pagination([
+            'defaultPageSize' => 8,
+            'totalCount' => $model->count(),
+        ]);
+        
+        $works = $model->orderBy('twork_id')
+                       ->offset($pagination->offset)
+                       ->limit($pagination->limit)
+                       ->all();
+        return $this->render('show-works',[
+            'works' => $works,
+            'pagination' => $pagination,
+        ]);
+        
     }
 
     /**

@@ -47,6 +47,9 @@ class TeacherWorkSearch extends TeacherWork
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
         ]);
 
         $this->load($params);
