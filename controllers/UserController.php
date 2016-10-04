@@ -8,6 +8,8 @@ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \app\models\StudentTeacher;
+use yii\data\ActiveDataProvider;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -43,7 +45,25 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    /**
+     * 当前登录老师对应的未批准的学生列表
+     * @return mixed
+     */
+    public function actionWaitingList()
+    {
+        $query = StudentTeacher::find(['teacher_number' => Yii::$app->user->getId()])->where([ 'verified' => '0' ]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
+        return $this->render('/user/teacher/waiting-list', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
     /**
      * Displays a single User model.
      * @param integer $id
