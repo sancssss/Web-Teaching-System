@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TeacherWorkSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '我发布的作业';
+$this->title = '提交学生列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teacher-work-index">
@@ -15,25 +15,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
     
-    <p>
-        <?= Html::a('创建新作业', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'twork_title',
+            'swork_title',
             //'twork_content',
-            'twork_date:date',
+            'swork_date:date',
+            'sworkTwork.swork_grade',
+            'userNumber.user_name',
             [
-               'attribute'=>'usersLink', 'format'=>'raw' 
+               'attribute'=>'commentLink', 'format'=>'raw' 
             ],
-
-            ['class' => 'yii\grid\ActionColumn',
-             'template' => '{view}',
-                ],
         ],
     ]); ?>
     

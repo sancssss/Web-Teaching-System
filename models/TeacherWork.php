@@ -1,7 +1,8 @@
 <?php
 
 namespace app\models;
-
+use yii\helpers\Url;
+use yii\helpers\Html;
 use Yii;
 
 /**
@@ -11,6 +12,7 @@ use Yii;
  * @property string $twork_title
  * @property string $twork_content
  * @property string $twork_date
+ * @property string $twork_update
  * @property integer $user_number
  *
  * @property SworkTwork[] $sworkTworks
@@ -50,8 +52,23 @@ class TeacherWork extends \yii\db\ActiveRecord
             'twork_title' => '作业题目',
             'twork_content' => '作业要求',
             'twork_date' => ' 发布时间',
+            'user_update' => '更新时间',
             'user_number' => '发布者ID',
+            'usersLink' => '提交数量'
         ];
+    }
+    
+    /**
+     * 得到每个作业的提交学生列表的链接
+     * 
+     * @return Html $link
+     * 
+     */
+    public function getUsersLink()
+    {
+        $url = Url::to(['/teacher-work/submit-users', 'id' => $this->twork_id]);
+        $options = [];
+        return Html::a($this->getSubmitCount(), $url, $options);
     }
 
     /**

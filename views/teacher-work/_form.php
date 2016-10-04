@@ -21,5 +21,8 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+     <?php if($lastupdate != NULL){
+        echo '上次更新'+ Yii::$app->formatter->asDatetime($lastupdate, "php:mhi");
+    }?>
 
 </div>

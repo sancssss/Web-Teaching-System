@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "student_work".
@@ -50,6 +51,7 @@ class StudentWork extends \yii\db\ActiveRecord
             'swork_content' => '作业答案',
             'swork_date' => '提交时间',
             'user_number' => '提交者ID',
+            'commentLink' => '批改链接'
         ];
     }
     //TODO sql优化
@@ -71,6 +73,18 @@ class StudentWork extends \yii\db\ActiveRecord
             return TRUE;
         }
     }
+    
+    /**
+     * 返回某个作业的批改链接
+     * @return Html $links
+     */
+    public function getCommentLink()
+    {
+        $tworkid = $this->getSworkTwork()->where(['swork_id' => $this->swork_id])->one();
+        $url = Url::to(['/teacher-work/comment-swork' , 'sworkid' => $this->swork_id, 'tworkid' => $tworkid->twork_id]);
+        $option = [];
+        return Html::a('查看', $url, $option);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -83,9 +97,9 @@ class StudentWork extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSworkTworks()
+    public function getSworkTwork()
     {
-        return $this->hasMany(SworkTwork::className(), ['swork_id' => 'swork_id']);
+        return $this->hasOne(SworkTwork::className(), ['swork_id' => 'swork_id']);
     }
 
     /**

@@ -9,6 +9,9 @@ use Yii;
  *
  * @property integer $swork_id
  * @property integer $twork_id
+ * @property double $swork_grade
+ * @property string $swork_comment
+ * @property string $swork_comment_date
  *
  * @property StudentWork $swork
  * @property TeacherWork $twork
@@ -31,6 +34,8 @@ class SworkTwork extends \yii\db\ActiveRecord
         return [
             [['swork_id', 'twork_id'], 'required'],
             [['swork_id', 'twork_id'], 'integer'],
+            [['swork_grade'], 'number'],
+            [['swork_comment'], 'string'],
             [['swork_id'], 'exist', 'skipOnError' => true, 'targetClass' => StudentWork::className(), 'targetAttribute' => ['swork_id' => 'swork_id']],
             [['twork_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherWork::className(), 'targetAttribute' => ['twork_id' => 'twork_id']],
         ];
@@ -44,6 +49,9 @@ class SworkTwork extends \yii\db\ActiveRecord
         return [
             'swork_id' => 'Swork ID',
             'twork_id' => 'Twork ID',
+            'swork_grade' => '成绩',
+            'swork_comment' => '评语',
+            'swork_comment_date' => '批改日期',
         ];
     }
 

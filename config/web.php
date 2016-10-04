@@ -49,6 +49,13 @@ $config = [
             ],
         ],
         */
+        'formatter' => [
+            'dateFormat' => 'MM月dd日',
+            'datetimeFormat' => 'php:Y.m.d H:i:s',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => '.',
+            'currencyCode' => 'CN',
+        ],
     ],
     'params' => $params,
 ];

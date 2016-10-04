@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use \app\models\Form\TWorkForm;
+use \app\models\StudentWork;
+use \app\models\Form\TWorkCommentForm;
+use \app\models\SworkTwork;
 
 /**
  * TeacherWorkController implements the CRUD actions for TeacherWork model.
@@ -110,14 +113,77 @@ class TeacherWorkController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $formModel = new TWorkForm();
+        $formModel->title = $model->twork_title;
+        $formModel->content = $model->twork_content;
+        if ($formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
+            $model->twork_title = $formModel->title;
+            $model->twork_content =  $formModel->content;
+            $model->twork_update = time();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->twork_id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $formModel,
+                'lastupdate' => $model->twork_update,
             ]);
         }
+    }
+    /**
+     * 得到某个作业的提交用户列表
+     * @param integer $id 老师布置的作业ID
+     * @return $mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionSubmitUsers($id = -1)
+    {
+        if($id == -1){
+            throw new NotFoundHttpException('错误请求！');
+        }
+        $model = StudentWork::find()->innerJoin('swork_twork', 'student_work.swork_id = swork_twork.swork_id')
+                                    ->where(['swork_twork.twork_id' => $id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $model,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
+         return $this->render('submit-users', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    /**
+     * 作业批改页面
+     * @param integer $sworkid 学生做的作业的id
+     * @param intger $tworkid 老师布置的作业id
+     * @return $mixed
+     */
+    
+    public function actionCommentSwork($sworkid, $tworkid)
+    {
+        $model = new TWorkCommentForm();
+        $studentmodel = StudentWork::findOne($sworkid);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $sworkTwork = SworkTwork::findOne($sworkid);
+            $sworkTwork->swork_comment = $model->comment; 
+            $sworkTwork->swork_grade = $model->grade;
+            $sworkTwork->swork_id = $sworkid;
+            $sworkTwork->twork_id = $tworkid;
+            $sworkTwork->swork_comment_date = time();
+            if($sworkTwork->save())
+            {
+                return $this->redirect(['submit-users', 'id' => $tworkid]);
+            }else{
+                Yii::trace($sworkTwork->getErrors(), 'saveError');
+                Yii::$app->session->setFlash('error', '提交错误');
+            }
+        }
+            return $this->render('comment-swork', [
+                'model' => $model,
+                'studentmodel' => $studentmodel,
+            ]);
     }
 
     /**
