@@ -46,6 +46,7 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
     /**
      * 当前登录老师对应的未批准的学生列表
      * @return $mixed
@@ -78,8 +79,7 @@ class UserController extends Controller
      * 老师确认某个id的学生为自己的学生
      * @param integer $id 学生的学号
      * @return mixed 返回列表页
-     */
-    
+     */ 
     public function actionVerified($id)
     {
         $this->verifiedItem($id);

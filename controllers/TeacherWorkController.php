@@ -13,6 +13,7 @@ use \app\models\Form\TWorkForm;
 use \app\models\StudentWork;
 use \app\models\Form\TWorkCommentForm;
 use \app\models\SworkTwork;
+use app\models\Course;
 
 /**
  * TeacherWorkController implements the CRUD actions for TeacherWork model.
@@ -47,14 +48,15 @@ class TeacherWorkController extends Controller
     }
 
     /**
-     * Lists all TeacherWork models.
+     * 显示cid课程号对应的作业列表
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($cid)
     {
         //$searchModel = new TeacherWorkSearch();
        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $query = TeacherWork::find()->where(['user_number' => Yii::$app->user->getId()]);
+        $query = TeacherWork::find()->where(['course_id' => $cid]);
+        $course = Course::findOne($cid);
          $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -65,6 +67,7 @@ class TeacherWorkController extends Controller
         return $this->render('index', [
             //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'course' => $course,
         ]);
     }
 
@@ -81,21 +84,28 @@ class TeacherWorkController extends Controller
     }
 
     /**
-     * Creates a new TeacherWork model.
+     * 依据课程id创建作业
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($cid)
     {
         $model = new TWorkForm();
-
+        $model->setCourseName($cid);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $teacherWork = new TeacherWork();
+            if(!$teacherWork->isBelongToTeacher(Yii::$app->user->getId())){
+              throw new NotFoundHttpException('非法请求');
+            }
             $teacherWork->twork_title = $model->title;
             $teacherWork->twork_content = $model->content;
             $teacherWork->twork_date = time();
-            $teacherWork->user_number = Yii::$app->user->getId();
-            $teacherWork->save();
+            $teacherWork->course_id = $cid;
+            if(!$teacherWork->save())
+            {
+                throw new NotFoundHttpException(Yii::trace($teacherWork->getErrors()));
+            }
+            
             return $this->redirect(['view', 'id' => $teacherWork->twork_id]);
         } else {
             return $this->render('create', [
@@ -125,6 +135,7 @@ class TeacherWorkController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $formModel,
+                //TODO:显示更新时间未完成
                 'lastupdate' => $model->twork_update,
             ]);
         }
@@ -208,7 +219,8 @@ class TeacherWorkController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = TeacherWork::find($id)->where(['user_number' => Yii::$app->user->getId()])->one()) !== null) {
+        if (($model = TeacherWork::find($id)->innerJoin('teacher_course', 'teacher_course.course_id = teacher_work.course_id')
+                ->where(['teacher_number' => Yii::$app->user->getId()])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

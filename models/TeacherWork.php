@@ -13,11 +13,11 @@ use Yii;
  * @property string $twork_content
  * @property string $twork_date
  * @property string $twork_update
- * @property integer $user_number
+ * @property integer $course_id
  *
  * @property SworkTwork[] $sworkTworks
  * @property StudentWork[] $sworks
- * @property User $userNumber
+ *  @property TeacherCourse $course
  */
 class TeacherWork extends \yii\db\ActiveRecord
 {
@@ -35,10 +35,11 @@ class TeacherWork extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['twork_title', 'twork_content', 'twork_date', 'user_number'], 'required'],
+            [['twork_title', 'twork_content', 'twork_date', 'course_id'], 'required'],
             [['twork_content'], 'string'],
-            [['twork_title'], 'string', 'max' => 255],
-            [['user_number'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_number' => 'user_number']],
+            [['course_id'], 'integer'],
+            [['twork_title', 'twork_update'], 'string', 'max' => 255],
+            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'course_id']],
         ];
     }
 
@@ -53,9 +54,23 @@ class TeacherWork extends \yii\db\ActiveRecord
             'twork_content' => '作业要求',
             'twork_date' => ' 发布时间',
             'user_update' => '更新时间',
-            'user_number' => '发布者ID',
+            'course_id' => '课程号',
             'usersLink' => '提交数量'
         ];
+    }
+    /**
+     * 判断当前课程是否属于当前身份 是返回true
+     * @param type $tid
+     * @return boolean
+     */
+    public function isBelongToTeacher($tid)
+    {
+        $check = $this->getCourse()->where(['course_id' => $this->course_id, 'teacher_number' => $tid]);
+        if($check == NULL){
+            return FALSE;
+        }else{
+            return TRUE;
+        }
     }
     
     /**
@@ -90,9 +105,9 @@ class TeacherWork extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserNumber()
+    public function getCourse()
     {
-        return $this->hasOne(User::className(), ['user_number' => 'user_number']);
+        return $this->hasOne(Course::className(), ['course_id' => 'course_id']);
     }
     
     /**

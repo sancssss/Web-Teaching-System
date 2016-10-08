@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'twork_date:datetime',
             [
                 'label' => '发布者',
-                'value' => $model->userNumber->user_name
+                'value' => $model->course->teacherNumber->user_name,
             ]
         ],
     ]) ?>

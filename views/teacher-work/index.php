@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TeacherWorkSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '我发布的作业';
+$this->title = $course->course_name.'的作业列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teacher-work-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
     
     <p>
-        <?= Html::a('创建新作业', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('创建新作业', ['create', 'cid' => $course->course_id], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

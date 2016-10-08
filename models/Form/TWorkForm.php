@@ -5,6 +5,7 @@ namespace app\models\Form;
 use Yii;
 use yii\base\Model;
 use app\models\User;
+use app\models\Course;
 
 /**
  * LoginForm is the model behind the login form.
@@ -16,6 +17,7 @@ class TWorkForm extends Model
 {
     public $title;
     public $content;
+    public $cid;
 
 
     /**
@@ -39,6 +41,21 @@ class TWorkForm extends Model
             'title' => '作业题目',
             'content' => '作业要求',
         ];
+    }
+    
+    /**
+     * 获取cid对应作业的名字
+     * @param type $cid
+     */
+    public function getCourseName()
+    {
+        return Course::find($this->cid)->one()->course_name;
+        
+    }
+    
+    public function setCourseName($cid)
+    {
+        $this->cid = $cid;
     }
     
 }
