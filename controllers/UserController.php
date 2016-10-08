@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \app\models\StudentTeacher;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -47,10 +48,19 @@ class UserController extends Controller
     }
     /**
      * 当前登录老师对应的未批准的学生列表
-     * @return mixed
+     * @return $mixed
      */
     public function actionWaitingList()
     {
+        $selectionData = Yii::$app->request->post('selection');
+        if($selectionData != NULL)
+        {
+           // Yii::trace($selectionData);
+           // Yii::trace(ArrayHelper::toArray(json_decode($selectionData[0])));
+            for($i = 0; $i < sizeof($selectionData); $i++){
+                $this->verifiedItem(ArrayHelper::toArray(json_decode($selectionData[$i]))['student_number']);
+            }
+        }
         $query = StudentTeacher::find(['teacher_number' => Yii::$app->user->getId()])->where([ 'verified' => '0' ]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,6 +72,34 @@ class UserController extends Controller
             //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    
+    /**
+     * 老师确认某个id的学生为自己的学生
+     * @param integer $id 学生的学号
+     * @return mixed 返回列表页
+     */
+    
+    public function actionVerified($id)
+    {
+        $this->verifiedItem($id);
+        $this->redirect(['user/waiting-list']);
+    }
+    
+    /**
+     * 老师确认某个id的学生为自己的学生
+     * @param integer $id 学生的学号
+     * @return boolean 如果更新成功返回true反之false
+     */
+    protected function verifiedItem($id)
+    {
+        $studentTeacher = StudentTeacher::find(['student_number' => $id])->where([ 'verified' => '0', 'teacher_number' => Yii::$app->user->getId()])->one();
+        $studentTeacher->verified = 1;
+        if($studentTeacher->save()){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
     }
     
     /**

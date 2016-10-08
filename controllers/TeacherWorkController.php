@@ -132,7 +132,7 @@ class TeacherWorkController extends Controller
     /**
      * 得到某个作业的提交用户列表
      * @param integer $id 老师布置的作业ID
-     * @return $mixed
+     * @return mixed
      * @throws NotFoundHttpException
      */
     public function actionSubmitUsers($id = -1)
