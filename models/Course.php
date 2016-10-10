@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "teacher_course".
@@ -50,9 +52,37 @@ class Course extends \yii\db\ActiveRecord
             'course_name' => '课程名',
             'course_content' => '课程介绍',
             'teacher_number' => '教师号',
+            'teacherCourseLink' => '课程详情',
+            'courseUserCountLink' => '选课人数'
         ];
     }
-
+    /**
+     * 得到每一个课程的详情链接
+     * @return Html
+     */
+    public function getTeacherCourseLink()
+    {
+        $url = Url::to(['/teacher-course/course', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a($this->course_name, $url, $options);
+    }
+    
+    public function getCourseUserCountLink()
+    {
+        $url = Url::to(['/teacher-course/course-user', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a($this->getCourseUserCount(), $url, $options);
+    }
+    
+    /**
+     * 得到当前课程选课已经确认了的人数
+     * @return integer
+     */
+    public function getCourseUserCount()
+    {
+        return $this->getStudentCourses()->where(['course_id' => $this->course_id, 'verified' => 1])->count();
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

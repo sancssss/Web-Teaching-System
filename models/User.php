@@ -13,8 +13,12 @@ use yii\web\IdentityInterface;
  * @property string $user_password
  * @property string $user_authKey
  *
+ * @property AuthAssignment[] $authAssignments
+ * @property AuthItem[] $itemNames
+ * @property StudentCourse[] $studentCourses
+ * @property TeacherCourse[] $courses
  * @property StudentWork[] $studentWorks
- * @property TeacherWork[] $teacherWorks
+ * @property TeacherCourse[] $teacherCourses
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -99,5 +103,44 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null) {
         return static::findOne(['access_token' => $token]);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentCourses()
+    {
+        return $this->hasMany(StudentCourse::className(), ['student_number' => 'user_number']);
+    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourses()
+    {
+        return $this->hasMany(TeacherCourse::className(), ['course_id' => 'course_id'])->viaTable('student_course', ['student_number' => 'user_number']);
+    }
+
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourses()
+    {
+        return $this->hasMany(TeacherCourse::className(), ['teacher_number' => 'user_number']);
+    }
+
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthAssignments()
+    {
+        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'user_number']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemNames()
+    {
+        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'user_number']);
+    }
 }
