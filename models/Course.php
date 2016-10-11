@@ -58,8 +58,9 @@ class Course extends \yii\db\ActiveRecord
             'courseWorksLink' => '作业详情',
         ];
     }
+    
     /**
-     * 得到每一个课程的详情链接
+     * 得到每一个教师课程的详情链接
      * @return Html
      */
     public function getTeacherCourseLink()
