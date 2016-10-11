@@ -82,7 +82,7 @@ class TeacherWork extends \yii\db\ActiveRecord
     public function getUsersLink()
     {
         $url = Url::to(['/teacher-work/submit-users', 'id' => $this->twork_id]);
-        $options =  ['class'=>'btn btn-success'];
+        $options =  [];
         return Html::a($this->getSubmitCount(), $url, $options);
     }
 

@@ -172,7 +172,7 @@ class TeacherWorkController extends Controller
      * @return $mixed
      */
     
-    public function actionCommentSwork($sworkid, $tworkid)
+    public function actionCommentSwork($sworkid)
     {
         $model = new TWorkCommentForm();
         $studentmodel = StudentWork::findOne($sworkid);
@@ -181,11 +181,10 @@ class TeacherWorkController extends Controller
             $sworkTwork->swork_comment = $model->comment; 
             $sworkTwork->swork_grade = $model->grade;
             $sworkTwork->swork_id = $sworkid;
-            $sworkTwork->twork_id = $tworkid;
             $sworkTwork->swork_comment_date = time();
             if($sworkTwork->save())
             {
-                return $this->redirect(['submit-users', 'id' => $tworkid]);
+                return $this->redirect(['submit-users', 'id' => $sworkTwork->twork_id]);
             }else{
                 Yii::trace($sworkTwork->getErrors(), 'saveError');
                 Yii::$app->session->setFlash('error', '提交错误');

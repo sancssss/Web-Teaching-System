@@ -8,7 +8,8 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $course->course_name.'的作业列表';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $course->course_name, 'url' => ['teacher-course/course', 'cid' => $course->course_id]];
+$this->params['breadcrumbs'][] = '全部作业';
 ?>
 <div class="teacher-work-index">
 

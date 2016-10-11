@@ -28,6 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                'attribute'=>'courseUserCountLink', 'format'=>'raw' 
             ],
+            [
+               'attribute'=>'courseWorksLink', 'format'=>'raw' 
+            ],
         
         ],
     ]); ?>

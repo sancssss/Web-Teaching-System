@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\TeacherWork */
 
 $this->title = '批改作业';
-$this->params['breadcrumbs'][] = ['label' => '我发布的作业', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $studentmodel->tworks->course->course_name, 'url' => ['index', 'cid' => $studentmodel->tworks->course_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teacher-work-create">

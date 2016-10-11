@@ -16,6 +16,7 @@ use yii\helpers\Html;
  *
  * @property StudentCourse[] $studentCourses
  * @property User[] $studentNumbers
+ * @property TeacherWork[] $teacherWorks
  * @property User $teacherNumber
  */
 class Course extends \yii\db\ActiveRecord
@@ -53,7 +54,8 @@ class Course extends \yii\db\ActiveRecord
             'course_content' => '课程介绍',
             'teacher_number' => '教师号',
             'teacherCourseLink' => '课程详情',
-            'courseUserCountLink' => '选课人数'
+            'courseUserCountLink' => '选课人数',
+            'courseWorksLink' => '作业详情',
         ];
     }
     /**
@@ -67,11 +69,26 @@ class Course extends \yii\db\ActiveRecord
         return Html::a($this->course_name, $url, $options);
     }
     
+    /**
+     * 得到每一个课程选课用户列表的链接
+     * @return Html
+     */    
     public function getCourseUserCountLink()
     {
         $url = Url::to(['/teacher-course/course-user', 'cid' => $this->course_id]);
         $options =  [];
         return Html::a($this->getCourseUserCount(), $url, $options);
+    }
+    
+    /**
+     * 得到每一个课程的作业列表链接
+     * @return Html
+     */
+    public function getCourseWorksLink()
+    {
+        $url = Url::to(['/teacher-work/index', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a('查看('.$this->getTeacherWorks()->where(['course_id' => $this->course_id])->count().')', $url, $options);
     }
     
     /**
@@ -105,5 +122,13 @@ class Course extends \yii\db\ActiveRecord
     public function getTeacherNumber()
     {
         return $this->hasOne(User::className(), ['user_number' => 'teacher_number']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherWorks()
+    {
+        return $this->hasMany(TeacherWork::className(), ['course_id' => 'course_id']);
     }
 }

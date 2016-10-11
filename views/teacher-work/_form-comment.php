@@ -18,8 +18,8 @@ use yii\widgets\DetailView;
             'swork_date:date',
             'userNumber.user_name',
             'sworkTwork.swork_grade',
-            'sworkTwork.swork_comment',
-            'sworkTwork.swork_comment_date'
+            'sworkTwork.swork_comment:ntext',
+            'sworkTwork.swork_comment_date:date'
         ],
     ]) ?>
 
