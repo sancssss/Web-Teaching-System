@@ -22,7 +22,9 @@ class CourseWithStudent extends Course
     {
         $attributeLabels = [
             'studentCourseLink' => '课程名',
-            'courseStatusLink'=> '选课状态'
+            'courseStatusLink'=> '选课状态',
+            'teacherNumber.user_name' => '授课教师',
+            'registerLink' => '操作'
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -43,15 +45,25 @@ class CourseWithStudent extends Course
      */
     public function getCourseStatusLink()
     {
-        //$url = Url::to(['/student-course/course', 'cid' => $this->course_id]);
-        //$options = [];
+        $url = Url::to(['/student-course/cancel-course', 'cid' => $this->course_id]);
+        $options = [];
         if($this->studentCourses->verified == 1)
         {
             return '已审核';
         }else{
-             return '未审核';
+             return '未审核 | '.Html::a('取消申请', $url, $options);
         }
         
+    }
+    
+     /**
+     * 选课申请链接：显示确认或取消
+     */
+    public function getRegisterLink()
+    {
+        $url = Url::to(['/student-course/register-course', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a('申请课程', $url, $options);
     }
     
 }

@@ -13,19 +13,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
  <p>
-        <?= Html::a('查看选课情况>>>', ['courses-list'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('查看选课情况', ['courses-list'], ['class' => 'btn btn-primary']) ?> <?= Html::a('查看全校课程', ['find-course'], ['class' => 'btn btn-primary']) ?>
     </p>
   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             'course_id',
             [
                'attribute'=>'studentCourseLink', 'format'=>'raw' 
             ],
-            
+            'teacherNumber.user_name'
         
         ],
     ]); ?>

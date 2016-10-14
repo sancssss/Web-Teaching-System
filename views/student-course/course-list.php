@@ -15,8 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('选择新课程', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('选择新课程', ['/student-course/find-course'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php if (Yii::$app->session->hasFlash('info')): ?>
+    <div class="alert alert-success alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    <?= Yii::$app->session->getFlash('info') ?>
+    </div>
+    <?php endif; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [

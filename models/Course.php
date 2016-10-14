@@ -104,7 +104,7 @@ class Course extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStudentCourses()
+    public function getStudentCourses() 
     {
         return $this->hasOne(StudentCourse::className(), ['course_id' => 'course_id']);
     }

@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="course-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['find-course'],
         'method' => 'get',
     ]); ?>
 
@@ -19,13 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'course_name') ?>
 
-    <?= $form->field($model, 'course_content') ?>
-
-    <?= $form->field($model, 'teacher_number') ?>
+    <?= $form->field($model, 'teacherNumber.user_name') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
