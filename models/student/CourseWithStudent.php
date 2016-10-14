@@ -21,7 +21,8 @@ class CourseWithStudent extends Course
     public function attributeLabels()
     {
         $attributeLabels = [
-            'studentCourseLink' => '课程',
+            'studentCourseLink' => '课程名',
+            'courseStatusLink'=> '选课状态'
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -36,5 +37,21 @@ class CourseWithStudent extends Course
         return Html::a($this->course_name, $url, $options);
     }
     
+    /**
+     * 获取选课的情况依据情况生成不同说明
+     * @return Html
+     */
+    public function getCourseStatusLink()
+    {
+        //$url = Url::to(['/student-course/course', 'cid' => $this->course_id]);
+        //$options = [];
+        if($this->studentCourses->verified == 1)
+        {
+            return '已审核';
+        }else{
+             return '未审核';
+        }
+        
+    }
     
 }

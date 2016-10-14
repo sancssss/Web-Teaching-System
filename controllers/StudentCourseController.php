@@ -39,7 +39,15 @@ class StudentCourseController extends \yii\web\Controller
      */
     public function actionCoursesList()
     {
-        
+         $dataProvider = new ActiveDataProvider([
+            'query' => CourseWithStudent::find()
+                ->innerJoinWith('studentCourses')
+                ->where(['student_number' => Yii::$app->user->getId()]),
+        ]);
+
+        return $this->render('course-list', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
     
     /**
@@ -68,7 +76,8 @@ class StudentCourseController extends \yii\web\Controller
      */
     protected function findModel($cid)
     {
-        if (($model = Course::find()->innerJoinWith('studentNumbers')->where(['student_number' => Yii::$app->user->getId()])->one()) !== null) {
+        //查询时候用where实现条件就会使find中的条件失效
+        if (($model = CourseWithStudent::find()->innerJoinWith('studentNumbers')->where(['student_number' => Yii::$app->user->getId(), 'teacher_course.course_id' => $cid])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

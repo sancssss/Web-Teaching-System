@@ -22,6 +22,9 @@ $this->params['breadcrumbs'][] = '课程详情';
             'course_id',
             'teacherNumber.user_name',
             'course_content:ntext',
+             [
+               'attribute'=>'courseStatusLink', 'format'=>'raw' 
+            ],
         ],
     ]) ?>
 
