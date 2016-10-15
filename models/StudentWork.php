@@ -4,7 +4,7 @@ namespace app\models;
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-
+use app\models\StudentCourse;
 /**
  * This is the model class for table "student_work".
  *
@@ -64,9 +64,10 @@ class StudentWork extends \yii\db\ActiveRecord
         //tworkid存在返回true
         $isTworkidExist = TeacherWork::find()->where(['twork_id' => $tworkid])->one() != NULL;
         //重复提交返回true
-        $isRepeatSubmit = SworkTwork::find()->joinWith('swork')->where(['twork_id' => $tworkid, 'user_number' => $usernumber])->count() > 0;
-        //师生归属正确返回true且必须为确认了的学生
-        $isBelong = StudentTeacher::find()->join('INNER JOIN', 'teacher_work', 'student_teacher.teacher_number = teacher_work.user_number')->where(['twork_id' => $tworkid, 'student_number' => $usernumber, 'verified' => 1])->count() > 0;
+        $isRepeatSubmit = SworkTwork::find()->innerJoinWith('swork')->where(['twork_id' => $tworkid, 'user_number' => $usernumber])->count() > 0;
+        //课程与学生归属正确返回true且必须为确认了的学生
+        $isBelong = StudentCourse::find()->innerJoin('teacher_work', 'teacher_work.course_id = student_course.course_id')
+                ->where(['student_course.student_number' => $usernumber, 'student_course.verified' => 1, 'teacher_work.twork_id' => $tworkid]);
         if(!$isTworkidExist || $isRepeatSubmit || !$isBelong){
             return FALSE; 
         }else{

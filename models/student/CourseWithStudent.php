@@ -24,7 +24,8 @@ class CourseWithStudent extends Course
             'studentCourseLink' => '课程名',
             'courseStatusLink'=> '选课状态',
             'teacherNumber.user_name' => '授课教师',
-            'registerLink' => '操作'
+            'registerLink' => '操作',
+            'courseWorkLink' => '作业'
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -56,7 +57,15 @@ class CourseWithStudent extends Course
         
     }
     
-     /**
+    public function getCourseWorkLink()
+    {
+        $url = Url::to(['/student-work/index', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a('查看', $url, $options);
+    }
+
+
+    /**
      * 选课申请链接：显示确认或取消
      */
     public function getRegisterLink()

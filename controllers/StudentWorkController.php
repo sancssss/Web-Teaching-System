@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\StudentWork;
-use app\models\StudentWorkSearch;
+use app\models\student\CourseWithStudent;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +12,9 @@ use yii\filters\AccessControl;
 use \app\models\Form\SWorkForm;
 use \app\models\SworkTwork;
 use app\models\TeacherWork;
+use app\models\student\WorkWithStudent;
 use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 /**
  * StudentWorkController implements the CRUD actions for StudentWork model.
  */
@@ -46,17 +48,31 @@ class StudentWorkController extends Controller
     }
 
     /**
-     * Lists all StudentWork models.
+     * 显示课程号为cid的作业
+     * @throw 当请求不是当前学生所选确认了的课的作业列表时将会抛出404异常
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($cid)
     {
-        $searchModel = new StudentWorkSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $course = CourseWithStudent::find()
+                ->innerJoinWith('studentNumbers')
+                ->where(['student_course.course_id' => $cid, 'student_course.verified' => 1, 'user_number' => Yii::$app->user->getId()])
+                ->one();
+        if($course == null){
+           throw new NotFoundHttpException('错误访问');
+        }
+        $query = WorkWithStudent::find()
+                ->where(['course_id' => $cid]);
+         $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'course' => $course,
         ]);
     }
 
@@ -65,9 +81,9 @@ class StudentWorkController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionWork($id)
     {
-        return $this->render('view', [
+        return $this->render('work', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -78,9 +94,10 @@ class StudentWorkController extends Controller
      *@param integer $tworkid 学生将要提交的对应老师布置的作业id
      * @return mixed
      */
-    public function actionCreate($tworkid)
+    public function actionCommitSwork($tworkid)
     {        
         $model = new SWorkForm();
+        $course = TeacherWork::find()->where(['twork_id' => $tworkid])->one();
        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $studentWork = new StudentWork();
             $sworkTwork = new SworkTwork();
@@ -94,13 +111,14 @@ class StudentWorkController extends Controller
                 $sworkTwork->twork_id = $tworkid;
                 $sworkTwork->swork_id =  $studentWork->swork_id;
                 $sworkTwork->save();
-                return $this->redirect(['view', 'id' => $studentWork->swork_id]);
+                return $this->redirect(['work', 'id' => $studentWork->swork_id]);
             }else{
                  Yii::$app->session->setFlash('error', "提交错误！");
             }
         }
-        return $this->render('create', [
+        return $this->render('commit-twork', [
                 'model' => $model,
+                'course' => $course,
             ]);
     }
 
@@ -110,30 +128,29 @@ class StudentWorkController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdateSwork($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->swork_id]);
+            return $this->redirect(['work', 'id' => $model->swork_id]);
         } else {
-            return $this->render('update', [
+            return $this->render('update-swork', [
                 'model' => $model,
             ]);
         }
     }
 
     /**
-     * Deletes an existing StudentWork model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * 教师布置的作业详情
+     * @param type $tworkid 布置的作业id
      */
-    public function actionDelete($id)
+    public function actionTeacherWork($tworkid)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = WorkWithStudent::find()->where(['twork_id' => $tworkid])->one();
+        return $this->render('teacher-work', [
+                'model' => $model,
+            ]);
     }
     
     /**
@@ -167,8 +184,7 @@ class StudentWorkController extends Controller
         return $this->render('show-works',[
             'works' => $works,
             'pagination' => $pagination,
-        ]);
-        
+        ]);        
     }
 
     /**
@@ -180,7 +196,7 @@ class StudentWorkController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = StudentWork::find($id)->where(['user_number' => Yii::$app->user->getId()])->one()) !== null) {
+        if (($model = StudentWork::find()->where(['swork_id' => $id, 'user_number' => Yii::$app->user->getId()])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

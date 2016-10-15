@@ -2,19 +2,19 @@
 
 use yii\helpers\Html;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\StudentWork */
 
-$this->title = 'Update Student Work: ' . $model->swork_id;
+$this->title = '提交 《'.$course->twork_title. '》';
 $this->params['breadcrumbs'][] = ['label' => 'Student Works', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->swork_id, 'url' => ['view', 'id' => $model->swork_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="student-work-update">
+<div class="student-work-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_form_commit_work', [
         'model' => $model,
     ]) ?>
 
