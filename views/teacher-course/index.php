@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             'course_id',
             [
@@ -27,6 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                'attribute'=>'courseUserCountLink', 'format'=>'raw' 
+            ],
+            [
+               'attribute'=>'courseWaitingLink', 'format'=>'raw' 
             ],
             [
                'attribute'=>'courseWorksLink', 'format'=>'raw' 

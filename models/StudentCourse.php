@@ -47,7 +47,7 @@ class StudentCourse extends \yii\db\ActiveRecord
         return [
             'student_number' => '学生学号',
             'course_id' => '课程号',
-            'verifiedIt' => '确认学生',
+            'verifiedIt' => '操作',
         ];
     }
     
@@ -57,7 +57,7 @@ class StudentCourse extends \yii\db\ActiveRecord
      */
     public function getVerifiedIt()
     {
-        $url = Url::to(['/user/verified', 'sid' => $this->student_number, 'cid' => $this->course_id]);
+        $url = Url::to(['/teacher-course/verified', 'sid' => $this->student_number, 'cid' => $this->course_id]);
         $options = [];
         return Html::a('确认', $url, $options);
     }
