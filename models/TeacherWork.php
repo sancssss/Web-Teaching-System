@@ -38,7 +38,7 @@ class TeacherWork extends \yii\db\ActiveRecord
             [['twork_title', 'twork_content', 'twork_date', 'course_id'], 'required'],
             [['twork_content'], 'string'],
             [['course_id'], 'integer'],
-            [['twork_title', 'twork_update'], 'string', 'max' => 255],
+            [['twork_title'], 'string', 'max' => 255],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'course_id']],
         ];
     }

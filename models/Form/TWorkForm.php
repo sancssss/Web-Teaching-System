@@ -17,7 +17,9 @@ class TWorkForm extends Model
 {
     public $title;
     public $content;
-    public $cid;
+    public $course_id;
+    public $course_name;
+    public $twork_id;
 
 
     /**
@@ -41,21 +43,6 @@ class TWorkForm extends Model
             'title' => '作业题目',
             'content' => '作业要求',
         ];
-    }
-    
-    /**
-     * 获取cid对应作业的名字
-     * @param type $cid
-     */
-    public function getCourseName()
-    {
-        return Course::find($this->cid)->one()->course_name;
-        
-    }
-    
-    public function setCourseName($cid)
-    {
-        $this->cid = $cid;
     }
     
 }

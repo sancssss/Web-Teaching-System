@@ -10,6 +10,7 @@ use app\models\Form\LoginForm;
 use app\models\ContactForm;
 use app\models\Form\SignupForm;
 use app\models\User;
+use app\models\StudentInformation;
 
 class SiteController extends Controller
 {
@@ -119,6 +120,8 @@ class SiteController extends Controller
                  $auth = Yii::$app->authManager;
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
+                 //跳转到学生信息完善
+                 return $this->redirect('udpate-student-information');
             }
             $identity = User::findOne($user->user_number);
             Yii::$app->user->login($identity, 0);
@@ -126,6 +129,26 @@ class SiteController extends Controller
             //return $this->goBack();
         }
         return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+    
+    /**
+     * 完善学生信息
+     * @return mixd
+     */
+    public function actionUpdateStudentInformation()
+    {
+        $model = StudentInformation::find(Yii::$app->user->getId())->one();
+        if($model == null){
+           $model = new StudentInformation();
+           $model->student_number = Yii::$app->user->getId();
+        }
+        if($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            Yii::$app->session->setFlash('success', "资料更新成功");
+        }
+        return $this->render('udpate-student-information', [
             'model' => $model,
         ]);
     }

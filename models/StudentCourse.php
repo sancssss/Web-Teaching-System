@@ -36,6 +36,7 @@ class StudentCourse extends \yii\db\ActiveRecord
             [['student_number', 'course_id', 'verified'], 'integer'],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'course_id']],
             [['student_number'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['student_number' => 'user_number']],
+            //[['course_id', 'student_number'], 'unique', 'targetClass' => [Course::className(), User::className()], 'targetAttribute' => ['course_id' => 'course_id' ,'student_number' => 'user_number']], 
         ];
     }
 

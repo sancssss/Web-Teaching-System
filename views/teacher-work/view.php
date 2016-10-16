@@ -7,7 +7,8 @@ use yii\widgets\DetailView;
 /* @var $model app\models\TeacherWork */
 
 $this->title = $model->twork_title;
-$this->params['breadcrumbs'][] = ['label' => 'Teacher Works', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '我的课程', 'url' => ['/teacher-course/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->course->course_name.'的作业', 'url' => ['teacher-work/index', 'cid' => $model->course_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="teacher-work-view">
@@ -15,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->twork_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->twork_id], [
+        <?= Html::a('更新作业', ['update', 'id' => $model->twork_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除作业', ['delete', 'id' => $model->twork_id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '确认删除?',
                 'method' => 'post',
             ],
         ]) ?>

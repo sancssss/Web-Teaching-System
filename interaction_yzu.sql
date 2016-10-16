@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2016-10-14 16:27:14
+Date: 2016-10-16 11:29:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -128,15 +128,36 @@ CREATE TABLE `student_course` (
   KEY `fk_coures` (`course_id`),
   CONSTRAINT `fk_coures` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stu` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student_course
 -- ----------------------------
 INSERT INTO `student_course` VALUES ('141304120', '1', '1');
 INSERT INTO `student_course` VALUES ('141304120', '2', '1');
-INSERT INTO `student_course` VALUES ('141304120', '4', '0');
+INSERT INTO `student_course` VALUES ('141304120', '3', '1');
+INSERT INTO `student_course` VALUES ('141304120', '4', '1');
+INSERT INTO `student_course` VALUES ('141304120', '5', '1');
+INSERT INTO `student_course` VALUES ('141304120', '6', '1');
 INSERT INTO `student_course` VALUES ('141304121', '1', '1');
+INSERT INTO `student_course` VALUES ('141304121', '2', '1');
+
+-- ----------------------------
+-- Table structure for `student_information`
+-- ----------------------------
+DROP TABLE IF EXISTS `student_information`;
+CREATE TABLE `student_information` (
+  `student_number` int(12) NOT NULL COMMENT '学号',
+  `student_class` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '班级',
+  PRIMARY KEY (`student_number`),
+  CONSTRAINT `fk_stuinfo_student_number` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+
+-- ----------------------------
+-- Records of student_information
+-- ----------------------------
+INSERT INTO `student_information` VALUES ('141304120', '计科1401');
+INSERT INTO `student_information` VALUES ('141304121', '计科1401');
 
 -- ----------------------------
 -- Table structure for `student_work`
@@ -151,12 +172,13 @@ CREATE TABLE `student_work` (
   PRIMARY KEY (`swork_id`),
   KEY `fk_user_number` (`user_number`),
   CONSTRAINT `fk_user_number` FOREIGN KEY (`user_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
 
 -- ----------------------------
 -- Records of student_work
 -- ----------------------------
-INSERT INTO `student_work` VALUES ('1', 'diyicizuoye', 'dasdasdasdasd', null, '141304120');
+INSERT INTO `student_work` VALUES ('1', 'diyicizuoy', 'dasdasdasdasd', null, '141304120');
+INSERT INTO `student_work` VALUES ('3', 'ceshiasdkashdjkhajksh', 'dasdfkjaskldfjhaskldakls', '1476518579', '141304120');
 
 -- ----------------------------
 -- Table structure for `swork_twork`
@@ -178,6 +200,7 @@ CREATE TABLE `swork_twork` (
 -- Records of swork_twork
 -- ----------------------------
 INSERT INTO `swork_twork` VALUES ('1', '7', '90', '123123123123', '1476191683');
+INSERT INTO `swork_twork` VALUES ('3', '8', '100', 'test pingyu', '1476576867');
 
 -- ----------------------------
 -- Table structure for `teacher_course`
@@ -199,9 +222,9 @@ CREATE TABLE `teacher_course` (
 INSERT INTO `teacher_course` VALUES ('1', 'Computer System', 'Computer System', '123456');
 INSERT INTO `teacher_course` VALUES ('2', 'MySQL', 'about MySQL', '123456');
 INSERT INTO `teacher_course` VALUES ('3', 'data structure', 'about data structure', '123457');
-INSERT INTO `teacher_course` VALUES ('4', '计算机网络', '计算机网络', '123457');
-INSERT INTO `teacher_course` VALUES ('5', '算法设计与分析', '算法设计与分析~~wefwefwefwef', '123456');
-INSERT INTO `teacher_course` VALUES ('6', '大学英语', '大学英语大学英语大学英语大学英语大学英语大学英语大学英语大学英语大学英语大学英语', '123456');
+INSERT INTO `teacher_course` VALUES ('4', '数据结构', '数据化啊实打实大苏打', '123456');
+INSERT INTO `teacher_course` VALUES ('5', 'Python', 'Pythondasdasdasdasdasdasda', '123457');
+INSERT INTO `teacher_course` VALUES ('6', '大学英语', '大学bed发货就卡是否', '123456');
 
 -- ----------------------------
 -- Table structure for `teacher_work`
@@ -222,7 +245,7 @@ CREATE TABLE `teacher_work` (
 -- ----------------------------
 -- Records of teacher_work
 -- ----------------------------
-INSERT INTO `teacher_work` VALUES ('7', '第一次作业', '第一次作业第一次作业第一次作业第一次作业第一次作业', '1475935215', null, '1');
+INSERT INTO `teacher_work` VALUES ('7', '第一次作业', '第一次作业第一次作业第一次作业第一次作业第一次作业x', '1475935215', '1476577675', '1');
 INSERT INTO `teacher_work` VALUES ('8', '第二个测试作业', '啊是大家哈就是的好好打输了的话', '1475938377', null, '1');
 
 -- ----------------------------

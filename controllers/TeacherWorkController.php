@@ -124,8 +124,11 @@ class TeacherWorkController extends Controller
     {
         $model = $this->findModel($id);
         $formModel = new TWorkForm();
+        $formModel->twork_id = $model->twork_id;
         $formModel->title = $model->twork_title;
         $formModel->content = $model->twork_content;
+        $formModel->course_id = $model->course_id;
+        $formModel->course_name = $model->course->course_name;
         if ($formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
             $model->twork_title = $formModel->title;
             $model->twork_content =  $formModel->content;
@@ -218,8 +221,8 @@ class TeacherWorkController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = TeacherWork::find($id)->innerJoin('teacher_course', 'teacher_course.course_id = teacher_work.course_id')
-                ->where(['teacher_number' => Yii::$app->user->getId()])->one()) !== null) {
+        if (($model = TeacherWork::find()->innerJoin('teacher_course', 'teacher_course.course_id = teacher_work.course_id')
+                ->where(['twork_id' => $id, 'teacher_number' => Yii::$app->user->getId()])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

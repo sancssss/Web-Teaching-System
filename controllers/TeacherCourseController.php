@@ -12,7 +12,10 @@ use yii\filters\VerbFilter;
 use app\models\User;
 use app\models\Form\CourseForm;
 use app\models\StudentCourse;
+use app\models\Form\LoadStudentForm;
+use app\models\StudentInformation;
 use  yii\helpers\ArrayHelper;
+use PDOException;
 
 /**
  * TeacherCourseController implements the CRUD actions for Course model.
@@ -119,7 +122,50 @@ class TeacherCourseController extends Controller
             'model' => $this->findModel($cid),
         ]);
     }
-
+    /**
+     * 一键导入某个班级学生到某个课程
+     */
+    public function actionLoadClassStudent()
+    {
+        $model = new LoadStudentForm();
+        $courses = Course::findAll(['teacher_number' => Yii::$app->user->getId()]);
+        $myCourseList = ArrayHelper::map($courses, 'course_id', 'course_name');
+        if ($model->load(Yii::$app->request->post()) && $model->validate()){
+            $students = StudentInformation::find(['student_class' => $model->student_class])->asArray()->all();
+            $courseid = $model->course_id;
+            $this->loadStudent($students, $courseid);
+        }
+         return $this->render('load-class-student', [
+              'myCourseList' => $myCourseList,
+              'model' => $model,
+           ]);
+    }
+    /**
+     * 
+     * @param type $students
+     * @param type $courseid
+     */
+    protected function loadStudent($students, $courseid)
+    {
+        $countSuccess = 0;
+        for($i = 0; $i < count($students); $i++){
+            $model = new StudentCourse();
+            $model->student_number = $students[$i]['student_number'];
+            $model->course_id = $courseid;
+            $model->verified = 1;
+            //检查重复
+            $check = StudentCourse::find()->where(['student_number' => $students[$i]['student_number'], 'course_id' => $courseid])->one();
+            if($model->validate() && $check == null){
+                $model->save();
+                $countSuccess++;
+            } 
+        }
+        Yii::$app->session->setFlash('success', '导入成功！共'.$countSuccess.'条数据');
+        if($countSuccess == 0){
+            Yii::$app->session->setFlash('success', '未导入有效数据');
+        }
+        return true;
+    }
 
     /**
      * Creates a new Course model.
