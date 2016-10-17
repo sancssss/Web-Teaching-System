@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2016-10-17 09:23:11
+Date: 2016-10-17 21:46:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -109,15 +109,18 @@ CREATE TABLE `course_file` (
   `course_id` int(12) unsigned NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `file_extension` varchar(255) DEFAULT NULL,
+  `file_upload_time` int(11) NOT NULL,
   `file_hash` varchar(255) NOT NULL,
+  `file_download_count` int(11) DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `fk_coursefile_course_id` (`course_id`),
   CONSTRAINT `fk_coursefile_course_id` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course_file
 -- ----------------------------
+INSERT INTO `course_file` VALUES ('3', '1', '新建文本文档', 'txt', '1476704970', '8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_', '2');
 
 -- ----------------------------
 -- Table structure for `migration`
@@ -208,6 +211,9 @@ CREATE TABLE `swork_file` (
   `swork_id` int(12) NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `file_extension` varchar(255) NOT NULL,
+  `file_upload_time` int(11) NOT NULL,
+  `file_hash` varchar(255) NOT NULL,
+  `file_download_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `fk_sworkfile_course_id` (`swork_id`),
   CONSTRAINT `fk_sworkfile_course_id` FOREIGN KEY (`swork_id`) REFERENCES `student_work` (`swork_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -295,14 +301,18 @@ CREATE TABLE `twork_file` (
   `twork_id` int(12) NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `file_extension` varchar(255) NOT NULL,
+  `file_upload_time` int(11) NOT NULL,
+  `file_hash` varchar(255) NOT NULL,
+  `file_download_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `twork_id` (`twork_id`),
   CONSTRAINT `twork_file_ibfk_1` FOREIGN KEY (`twork_id`) REFERENCES `teacher_work` (`twork_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of twork_file
 -- ----------------------------
+INSERT INTO `twork_file` VALUES ('1', '7', '新建文本文档', 'txt', '1476708886', 'yEGp6s9NuudKLz2FnACT6VQpfM78X2D5', '3');
 
 -- ----------------------------
 -- Table structure for `user`
