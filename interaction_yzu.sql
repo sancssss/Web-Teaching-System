@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2016-10-16 11:29:09
+Date: 2016-10-17 09:23:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -101,6 +101,25 @@ CREATE TABLE `auth_rule` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `course_file`
+-- ----------------------------
+DROP TABLE IF EXISTS `course_file`;
+CREATE TABLE `course_file` (
+  `file_id` int(12) NOT NULL AUTO_INCREMENT,
+  `course_id` int(12) unsigned NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_extension` varchar(255) DEFAULT NULL,
+  `file_hash` varchar(255) NOT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `fk_coursefile_course_id` (`course_id`),
+  CONSTRAINT `fk_coursefile_course_id` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of course_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `migration`
 -- ----------------------------
 DROP TABLE IF EXISTS `migration`;
@@ -181,6 +200,24 @@ INSERT INTO `student_work` VALUES ('1', 'diyicizuoy', 'dasdasdasdasd', null, '14
 INSERT INTO `student_work` VALUES ('3', 'ceshiasdkashdjkhajksh', 'dasdfkjaskldfjhaskldakls', '1476518579', '141304120');
 
 -- ----------------------------
+-- Table structure for `swork_file`
+-- ----------------------------
+DROP TABLE IF EXISTS `swork_file`;
+CREATE TABLE `swork_file` (
+  `file_id` int(12) NOT NULL AUTO_INCREMENT,
+  `swork_id` int(12) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_extension` varchar(255) NOT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `fk_sworkfile_course_id` (`swork_id`),
+  CONSTRAINT `fk_sworkfile_course_id` FOREIGN KEY (`swork_id`) REFERENCES `student_work` (`swork_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of swork_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `swork_twork`
 -- ----------------------------
 DROP TABLE IF EXISTS `swork_twork`;
@@ -240,13 +277,32 @@ CREATE TABLE `teacher_work` (
   PRIMARY KEY (`twork_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `fk_tw_course` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of teacher_work
 -- ----------------------------
 INSERT INTO `teacher_work` VALUES ('7', '第一次作业', '第一次作业第一次作业第一次作业第一次作业第一次作业x', '1475935215', '1476577675', '1');
 INSERT INTO `teacher_work` VALUES ('8', '第二个测试作业', '啊是大家哈就是的好好打输了的话', '1475938377', null, '1');
+INSERT INTO `teacher_work` VALUES ('9', 'MySQL的第一次作业', 'create MySQL table and learn how to query data by select', '1476600257', null, '2');
+
+-- ----------------------------
+-- Table structure for `twork_file`
+-- ----------------------------
+DROP TABLE IF EXISTS `twork_file`;
+CREATE TABLE `twork_file` (
+  `file_id` int(12) NOT NULL AUTO_INCREMENT,
+  `twork_id` int(12) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_extension` varchar(255) NOT NULL,
+  PRIMARY KEY (`file_id`),
+  KEY `twork_id` (`twork_id`),
+  CONSTRAINT `twork_file_ibfk_1` FOREIGN KEY (`twork_id`) REFERENCES `teacher_work` (`twork_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of twork_file
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `user`

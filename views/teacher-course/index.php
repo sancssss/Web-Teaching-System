@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('创建新课程', ['create'], ['class' => 'btn btn-success']) ?> <?= Html::a('一键导入班级', ['load-class-student'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('创建新课程', ['create'], ['class' => 'btn btn-success']) ?> <?= Html::a('导入班级', ['load-class-student'], ['class' => 'btn btn-primary']) ?> 
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

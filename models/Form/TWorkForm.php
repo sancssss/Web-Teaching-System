@@ -45,4 +45,20 @@ class TWorkForm extends Model
         ];
     }
     
+    /**
+     * 获取cid对应作业的名字
+     * @param type $cid
+     */
+    public function getCourseName()
+    {
+        return Course::find($this->course_id)->one()->course_name;
+        
+}
+    
+    public function setCourseId($cid)
+    {
+        $this->course_id = $cid;
+    }
+    
+    
 }

@@ -91,7 +91,7 @@ class TeacherWorkController extends Controller
     public function actionCreate($cid)
     {
         $model = new TWorkForm();
-        $model->setCourseName($cid);
+        $model->setCourseId($cid);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $teacherWork = new TeacherWork();
             if(!$teacherWork->isBelongToTeacher(Yii::$app->user->getId())){

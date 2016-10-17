@@ -14,8 +14,11 @@ use app\models\Form\CourseForm;
 use app\models\StudentCourse;
 use app\models\Form\LoadStudentForm;
 use app\models\StudentInformation;
-use  yii\helpers\ArrayHelper;
-use PDOException;
+use app\models\Form\CourseUploadForm;
+use app\models\CourseFile;
+use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
+
 
 /**
  * TeacherCourseController implements the CRUD actions for Course model.
@@ -230,7 +233,26 @@ class TeacherCourseController extends Controller
         return $this->redirect(['index']);
     }
     
-     /**
+    /**
+     * 为课程号为cid的课程上传资料
+     * @param integer $cid
+     */
+    public function actionUploadFile($cid)
+    {
+        $fileModel = new CourseUploadForm();
+        
+        if(Yii::$app->request->isPost){
+            $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
+            if($fileModel->upload($cid)){
+                
+            }
+        }
+        return $this->render('upload-file', [
+            'model' => $fileModel,
+        ]);
+    }
+
+        /**
      * 老师确认某个id的学生的课程申请
      * @param integer $id 学生的学号 $cid 课程号
      * @return boolean 如果更新成功返回true反之false
