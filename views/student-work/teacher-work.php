@@ -27,10 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '发布者',
                 'value' => $model->course->teacherNumber->user_name,
             ],
-           [
+            [
                'attribute' => 'commitWorkLink',
                'format' => 'raw'
-           ]
+            ],
+            [
+              'attribute' => 'tworkFilesLink',
+                'format' => 'raw'
+            ]
         ],
     ]) ?>
 

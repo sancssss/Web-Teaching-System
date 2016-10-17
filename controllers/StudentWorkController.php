@@ -12,6 +12,7 @@ use yii\filters\AccessControl;
 use \app\models\Form\SWorkForm;
 use \app\models\SworkTwork;
 use app\models\TeacherWork;
+use app\models\TworkFile;
 use app\models\student\WorkWithStudent;
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
@@ -139,6 +140,28 @@ class StudentWorkController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+    
+    /**
+     * 显示作业号为tworkid的附件列表
+     * @param integer $tworkid
+     * @return mixed
+     */
+    public function actionCourseFiles($tworkid)
+    {
+        $work = WorkWithStudent::find()->where(['twork_Id' => $tworkid])->one();
+        if($work == NULL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        $query = TworkFile::find()->where(['twork_id' => $tworkid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('work-files', [
+            'dataProvider' => $dataProvider,
+            'work' => $work,
+        ]);
     }
 
     /**

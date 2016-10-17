@@ -17,7 +17,8 @@ use Yii;
  *
  * @property SworkTwork[] $sworkTworks
  * @property StudentWork[] $sworks
- *  @property TeacherCourse $course
+ * @property TeacherCourse $course
+ * @property TworkFile[] $tworkFiles
  */
 class TeacherWork extends \yii\db\ActiveRecord
 {
@@ -55,7 +56,8 @@ class TeacherWork extends \yii\db\ActiveRecord
             'twork_date' => ' 发布时间',
             'user_update' => '更新时间',
             'course_id' => '课程号',
-            'usersLink' => '提交数量'
+            'usersLink' => '提交数量',
+            'tworkFilesLink' => '附件',
         ];
     }
     /**
@@ -117,5 +119,24 @@ class TeacherWork extends \yii\db\ActiveRecord
     public function getSubmitCount()
     {
         return $this->getSworkTworks()->count();
+    }
+    
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTworkFiles()
+    {
+        return $this->hasMany(TworkFile::className(), ['twork_id' => 'twork_id']);
+    }
+    
+    /**
+     * 得到当前作业的文件列表链接
+     * @return Html
+     */
+    public function getTworkFilesLink()
+    {
+        $url = Url::to(['/teacher-work/course-files', 'tworkid' => $this->twork_id]);
+        $option = [];
+        return Html::a('附件', $url, $option);
     }
 }

@@ -6,6 +6,7 @@ use app\models\Course;
 use app\models\StudentCourse;
 use app\models\StudentCourseSearch;
 use yii\data\ActiveDataProvider;
+use app\models\CourseFile;
 use Yii;
 
 class StudentCourseController extends \yii\web\Controller
@@ -98,6 +99,26 @@ class StudentCourseController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+     /**
+     * 显示课程号为cid的课件列表
+     * @param integer $cid
+     * @return mixed
+     */
+    public function actionCourseFiles($cid)
+    {
+        $course = $this->findModel($cid);
+        $query = CourseFile::find()->where(['course_id' => $cid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('course-files', [
+            'dataProvider' => $dataProvider,
+            'course' => $course,
+        ]);
+    }
+
     
      /**
      * Finds the Course model based on its primary key value.

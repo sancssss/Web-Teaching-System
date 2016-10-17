@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('更新作业', ['update', 'id' => $model->twork_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('上传附件', ['upload-file', 'tworkid' => $model->twork_id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('删除作业', ['delete', 'id' => $model->twork_id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -36,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '发布者',
                 'value' => $model->course->teacherNumber->user_name,
-            ]
+            ],
+             'tworkFilesLink:raw'
         ],
     ]) ?>
 

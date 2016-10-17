@@ -24,7 +24,8 @@ class CourseWithTeacher extends Course
             'teacherCourseLink' => '课程名',
             'courseUserCountLink' => '选课人数',
             'courseWorksLink' => '作业详情',
-            'courseWaitingLink' => '未审核'
+            'courseWaitingLink' => '未审核',
+            'courseFilesLink' => '课件',
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -58,7 +59,7 @@ class CourseWithTeacher extends Course
     {
         $url = Url::to(['/teacher-work/index', 'cid' => $this->course_id]);
         $options =  [];
-        return Html::a('查看('.$this->getTeacherWorks()->where(['course_id' => $this->course_id])->count().')', $url, $options);
+        return Html::a($this->getTeacherWorks()->where(['course_id' => $this->course_id])->count().'次', $url, $options);
     }
     
     /**
@@ -91,6 +92,17 @@ class CourseWithTeacher extends Course
     public function getCourseWaitingCount()
     {
         return $this->getStudentCourses()->where(['course_id' => $this->course_id, 'verified' => 0])->count();
+    }
+    
+    /**
+     * 得到当前课程的文件列表链接
+     * @return Html
+     */
+    public function getCourseFilesLink()
+    {
+        $url = Url::to(['/teacher-course/course-files', 'cid' => $this->course_id]);
+        $option = [];
+        return Html::a('查看课件', $url, $option);
     }
     
 }

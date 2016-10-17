@@ -59,5 +59,10 @@ class WorkWithStudent extends TeacherWork
          return Html::a($this->twork_title, $url, $option);
     }
   
+    public function getTworkFilesLink() {
+        $url = Url::to(['/student-work/course-files', 'tworkid' => $this->twork_id]);
+        $option = [];
+        return Html::a('作业附件', $url, $option);
+    }
     
 }

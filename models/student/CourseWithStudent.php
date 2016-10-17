@@ -25,7 +25,8 @@ class CourseWithStudent extends Course
             'courseStatusLink'=> '选课状态',
             'teacherNumber.user_name' => '授课教师',
             'registerLink' => '操作',
-            'courseWorkLink' => '作业'
+            'courseWorkLink' => '作业',
+            'courseFilesLink' => '课程课件'
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -73,6 +74,17 @@ class CourseWithStudent extends Course
         $url = Url::to(['/student-course/register-course', 'cid' => $this->course_id]);
         $options =  [];
         return Html::a('申请课程', $url, $options);
+    }
+    
+    /**
+     * 得到当前课程的文件列表链接
+     * @return Html
+     */
+    public function getCourseFilesLink()
+    {
+        $url = Url::to(['/student-course/course-files', 'cid' => $this->course_id]);
+        $option = [];
+        return Html::a('查看课件', $url, $option);
     }
     
 }

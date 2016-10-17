@@ -2,32 +2,31 @@
 
 namespace app\models;
 
-use Yii;
-use app\models\teacher\CourseWithTeacher;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use Yii;
 
 /**
- * This is the model class for table "course_file".
+ * This is the model class for table "twork_file".
  *
  * @property integer $file_id
- * @property string $course_id
+ * @property integer $twork_id
  * @property string $file_name
  * @property string $file_extension
+ * @property integer $file_upload_time
  * @property string $file_hash
- * @property string $file_upload_time 
  * @property integer $file_download_count
  *
- * @property TeacherCourse $course
+ * @property TeacherWork $twork
  */
-class CourseFile extends \yii\db\ActiveRecord
+class TworkFile extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'course_file';
+        return 'twork_file';
     }
 
     /**
@@ -36,10 +35,10 @@ class CourseFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'file_name', 'file_hash'], 'required'],
-            [['course_id'], 'integer'],
+            [['twork_id', 'file_name', 'file_extension', 'file_upload_time', 'file_hash'], 'required'],
+            [['twork_id', 'file_upload_time', 'file_download_count'], 'integer'],
             [['file_name', 'file_extension', 'file_hash'], 'string', 'max' => 255],
-            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => CourseWithTeacher::className(), 'targetAttribute' => ['course_id' => 'course_id']],
+            [['twork_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherWork::className(), 'targetAttribute' => ['twork_id' => 'twork_id']],
         ];
     }
 
@@ -50,12 +49,12 @@ class CourseFile extends \yii\db\ActiveRecord
     {
         return [
             'file_id' => 'File ID',
-            'course_id' => 'Course ID',
+            'twork_id' => 'Twork ID',
             'file_name' => '文件名',
             'file_extension' => '文件类型',
-            'file_download_count' => '下载次数',
-            'file_hash' => 'File Hash',
             'file_upload_time' => '上传时间',
+            'file_hash' => 'File Hash',
+            'file_download_count' => '下载次数',
             'fileDownloadLink' => '下载链接'
         ];
     }
@@ -63,24 +62,23 @@ class CourseFile extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourse()
+    public function getTwork()
     {
-        return $this->hasOne(TeacherCourse::className(), ['course_id' => 'course_id']);
+        return $this->hasOne(TeacherWork::className(), ['twork_id' => 'twork_id']);
     }
     
-    //TODO::未进行下载安全加密
+     //TODO::未进行下载安全加密
     /**
      * 生成当前文件的下载链接
      * @return string
      */
     public function getFileDownloadLink()
     {
-        $model = CourseFile::findOne($this->file_id);
+        $model =  TworkFile::findOne($this->file_id);
         $model->file_download_count++;
         $model->save();
         $url = Url::to('@web/uploads/'.$this->file_hash.'.'.$this->file_extension);
         $option = [];
         return Html::a('下载', $url, $option);
     }
-    
 }

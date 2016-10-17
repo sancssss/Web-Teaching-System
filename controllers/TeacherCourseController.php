@@ -240,19 +240,40 @@ class TeacherCourseController extends Controller
     public function actionUploadFile($cid)
     {
         $fileModel = new CourseUploadForm();
-        
+        $course = $this->findModel($cid);     
         if(Yii::$app->request->isPost){
             $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
+            //upload方法内验证
             if($fileModel->upload($cid)){
-                
+                Yii::$app->session->setFlash('success', '文件上传成功！');
             }
         }
         return $this->render('upload-file', [
             'model' => $fileModel,
+            'course' => $course,
+        ]);
+    }
+    
+    /**
+     * 显示课程号为cid的课程列表
+     * @param integer $cid
+     * @return mixed
+     */
+    public function actionCourseFiles($cid)
+    {
+        $course = $this->findModel($cid);
+        $query = CourseFile::find()->where(['course_id' => $cid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('course-files', [
+            'dataProvider' => $dataProvider,
+            'course' => $course,
         ]);
     }
 
-        /**
+    /**
      * 老师确认某个id的学生的课程申请
      * @param integer $id 学生的学号 $cid 课程号
      * @return boolean 如果更新成功返回true反之false
@@ -287,4 +308,5 @@ class TeacherCourseController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
 }

@@ -14,6 +14,7 @@ use yii\helpers\Html;
  * @property string $course_content
  * @property integer $teacher_number
  *
+ * @property CourseFile[] $courseFiles
  * @property StudentCourse[] $studentCourses
  * @property User[] $studentNumbers
  * @property TeacherWork[] $teacherWorks
@@ -56,6 +57,14 @@ class Course extends \yii\db\ActiveRecord
         ];
     }
     
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourseFiles()
+    {
+        return $this->hasMany(CourseFile::className(), ['course_id' => 'course_id']);
+    }
+
     
     /**
      * @return \yii\db\ActiveQuery

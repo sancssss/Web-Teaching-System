@@ -14,6 +14,9 @@ use \app\models\StudentWork;
 use \app\models\Form\TWorkCommentForm;
 use \app\models\SworkTwork;
 use app\models\Course;
+use app\models\TworkFile;
+use app\models\Form\TworkUploadForm;
+use yii\web\UploadedFile;
 
 /**
  * TeacherWorkController implements the CRUD actions for TeacherWork model.
@@ -197,6 +200,46 @@ class TeacherWorkController extends Controller
                 'model' => $model,
                 'studentmodel' => $studentmodel,
             ]);
+    }
+    
+     /**
+     * 为课程号为tworkid的作业上传资料
+     * @param integer $tworkid
+     */
+    public function actionUploadFile($tworkid)
+    {
+        $fileModel = new TworkUploadForm();
+        $work = $this->findModel($tworkid);
+        if(Yii::$app->request->isPost){
+            $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
+            //upload方法内验证
+            if($fileModel->upload($tworkid)){
+                Yii::$app->session->setFlash('success', '文件上传成功！');
+            }
+        }
+        return $this->render('upload-file', [
+            'model' => $fileModel,
+            'work' => $work,
+        ]);
+    }
+    
+    /**
+     * 显示课程号为cid的课程列表
+     * @param integer $cid
+     * @return mixed
+     */
+    public function actionCourseFiles($tworkid)
+    {
+        $work = $this->findModel($tworkid);
+        $query = TworkFile::find()->where(['twork_id' => $tworkid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('work-files', [
+            'dataProvider' => $dataProvider,
+            'work' => $work,
+        ]);
     }
 
     /**
