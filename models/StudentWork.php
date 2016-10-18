@@ -51,7 +51,9 @@ class StudentWork extends \yii\db\ActiveRecord
             'swork_content' => '作业答案',
             'swork_date' => '提交时间',
             'user_number' => '提交者ID',
-            'commentLink' => '批改链接'
+            'commentLink' => '批改链接',
+            'sworkFilesLink' => '附件',
+            'tSworkFilesLink' => '附件'
         ];
     }
     //TODO sql优化
@@ -85,6 +87,28 @@ class StudentWork extends \yii\db\ActiveRecord
         $url = Url::to(['/teacher-work/comment-swork' , 'sworkid' => $this->swork_id, 'tworkid' => $tworkid->twork_id]);
         $option = [];
         return Html::a('查看', $url, $option);
+    }
+    
+    /**
+     * 获取学生作业的附件链接(学生端)
+     * @return Html
+     */
+    public function getSworkFilesLink()
+    {
+        $url = Url::to(['/student-work/swork-files' , 'sworkid' => $this->swork_id]);
+        $option = [];
+        return Html::a('附件列表', $url, $option);
+    }
+    
+     /**
+     * 获取学生作业的附件链接(教师端)
+     * @return Html
+     */
+    public function getTSworkFilesLink()
+    {
+        $url = Url::to(['/teacher-work/swork-files' , 'sworkid' => $this->swork_id]);
+        $option = [];
+        return Html::a('附件列表', $url, $option);
     }
 
     /**

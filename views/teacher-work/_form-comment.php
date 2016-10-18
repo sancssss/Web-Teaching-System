@@ -15,6 +15,7 @@ use yii\widgets\DetailView;
         'attributes' => [
             'swork_title',
             'swork_content:ntext',
+            'tSworkFilesLink:raw',
             'swork_date:date',
             'userNumber.user_name',
             'sworkTwork.swork_grade',

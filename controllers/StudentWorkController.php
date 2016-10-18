@@ -10,9 +10,12 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use \app\models\Form\SWorkForm;
+use app\models\Form\SworkUploadForm;
+use yii\web\UploadedFile;
 use \app\models\SworkTwork;
 use app\models\TeacherWork;
 use app\models\TworkFile;
+use app\models\SworkFile;
 use app\models\student\WorkWithStudent;
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
@@ -163,10 +166,69 @@ class StudentWorkController extends Controller
             'work' => $work,
         ]);
     }
-
+    
+    /**
+     * 显示某门学生提交作业的附件
+     * @param integer $sworkid 作业号
+     * @return mixed
+     */
+    public function actionSworkFiles($sworkid)
+    {
+        $work = $this->findModel($sworkid);
+        $query = SworkFile::find()->where(['swork_id' => $sworkid]);
+        $dataProvider = new ActiveDataProvider([
+           'query' => $query, 
+        ]);
+        return $this->render('swork-files', [
+            'dataProvider' => $dataProvider,
+            'work' => $work, 
+        ]);
+    }
+    
+    /**
+     * 提交学生端的附件
+     */
+    public function actionUploadSworkFile($sworkid)
+    {
+        $fileModel = new SworkUploadForm();
+        $work = $this->findModel($sworkid);     
+        if(Yii::$app->request->isPost){
+            $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
+            //upload方法内验证
+            if($fileModel->upload($sworkid)){
+                Yii::$app->session->setFlash('success', '文件上传成功！');
+            }
+        }
+        return $this->render('upload-file', [
+            'model' => $fileModel,
+            'work' => $work,
+        ]);
+    }
+    
+     /**
+     * 为课程号为sworkid的作业上传资料
+     * @param integer $sworkid
+     */
+    public function actionUploadFile($sworkid)
+    {
+        $fileModel = new TworkUploadForm();
+        $work = $this->findModel($tworkid);
+        if(Yii::$app->request->isPost){
+            $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
+            //upload方法内验证
+            if($fileModel->upload($tworkid)){
+                Yii::$app->session->setFlash('success', '文件上传成功！');
+            }
+        }
+        return $this->render('upload-file', [
+            'model' => $fileModel,
+            'work' => $work,
+        ]);
+    }
+    
     /**
      * 教师布置的作业详情
-     * @param type $tworkid 布置的作业id
+     * @param integer $tworkid 布置的作业id
      */
     public function actionTeacherWork($tworkid)
     {

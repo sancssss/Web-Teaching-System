@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'swork_date:date',
             'userNumber.user_name',
             'swork_content:ntext',
+            'sworkFilesLink:raw',
             'sworkTwork.swork_grade',
             'sworkTwork.swork_comment',
             'sworkTwork.swork_comment_date:date',

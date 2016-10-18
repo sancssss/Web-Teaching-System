@@ -15,6 +15,7 @@ use \app\models\Form\TWorkCommentForm;
 use \app\models\SworkTwork;
 use app\models\Course;
 use app\models\TworkFile;
+use app\models\SworkFile;
 use app\models\Form\TworkUploadForm;
 use yii\web\UploadedFile;
 
@@ -200,6 +201,28 @@ class TeacherWorkController extends Controller
                 'model' => $model,
                 'studentmodel' => $studentmodel,
             ]);
+    }
+    
+    /**
+     * 显示某门学生提交作业的附件
+     * @param integer $sworkid 作业号
+     * @return mixed
+     */
+    public function actionSworkFiles($sworkid)
+    {
+        //TODO::批改安全性检查
+        $work = StudentWork::find()->where(['swork_id' => $sworkid])->one();
+        if($work == NULL){
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        $query = SworkFile::find()->where(['swork_id' => $sworkid]);
+        $dataProvider = new ActiveDataProvider([
+           'query' => $query, 
+        ]);
+        return $this->render('swork-files', [
+            'dataProvider' => $dataProvider,
+            'work' => $work, 
+        ]);
     }
     
      /**

@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'swork_content')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('更新', ['btn btn-success']) ?>
+        <?= Html::submitButton('更新', ['class' => 'btn btn-success']) ?> <?= Html::a('管理附件', ['swork-files', 'sworkid' => $model->swork_id], ['class' => 'btn btn-primary']) ?>
     </div>
     <?php if (Yii::$app->session->hasFlash('error')): ?>
     <div class="alert alert-warning alert-dismissable">
