@@ -121,7 +121,7 @@ class SiteController extends Controller
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
                  //跳转到学生信息完善
-                 return $this->redirect('udpate-student-information');
+                 return $this->redirect('update-student-information');
             }
             $identity = User::findOne($user->user_number);
             Yii::$app->user->login($identity, 0);

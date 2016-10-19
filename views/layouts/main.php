@@ -38,6 +38,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => '首页', 'url' => ['/site/index']],
             ['label' => '关于', 'url' => ['/site/about']],
+            ['label' => '注册', 'url' => ['/site/signup']],
             Yii::$app->user->isGuest ? (
                 ['label' => '登录', 'url' => ['/site/login']]
             ) : (
