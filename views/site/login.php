@@ -5,6 +5,7 @@
 /* @var $model app\models\LoginForm */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 $this->title = '登录';
@@ -30,10 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'rememberMe')->checkbox([
             'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
         ]) ?>
-
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::resetButton('重置', ['class' => 'btn btn-primary', 'name' => 'reset-button'])?>
+                <!--<a href="<?= Url::to('forgot-password')?>">忘记密码？</a> -->
+                <?= Html::a('修改密码',['site/forgot-password'])?>
             </div>
         </div>
 
