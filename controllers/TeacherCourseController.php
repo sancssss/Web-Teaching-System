@@ -275,7 +275,7 @@ class TeacherCourseController extends Controller
     }
     
      /**
-     * 重定向到真实下载链接并且下载数量加一
+     * 重定向到真实下载链接
      */
     public function actionDownloadCourseFile($fileid)
     {
