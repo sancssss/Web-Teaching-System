@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2016-10-17 21:46:23
+Date: 2016-10-20 21:59:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,7 +120,28 @@ CREATE TABLE `course_file` (
 -- ----------------------------
 -- Records of course_file
 -- ----------------------------
-INSERT INTO `course_file` VALUES ('3', '1', '新建文本文档', 'txt', '1476704970', '8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_', '2');
+INSERT INTO `course_file` VALUES ('3', '1', '新建文本文档', 'txt', '1476704970', '8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_', '11');
+
+-- ----------------------------
+-- Table structure for `course_notice`
+-- ----------------------------
+DROP TABLE IF EXISTS `course_notice`;
+CREATE TABLE `course_notice` (
+  `notice_id` int(12) NOT NULL AUTO_INCREMENT,
+  `notice_title` varchar(255) CHARACTER SET gbk NOT NULL COMMENT '标题',
+  `notice_content` text CHARACTER SET gbk NOT NULL COMMENT '内容',
+  `notice_date` varchar(255) CHARACTER SET gbk NOT NULL COMMENT '时间',
+  `course_id` int(12) unsigned NOT NULL,
+  PRIMARY KEY (`notice_id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `course_notice_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of course_notice
+-- ----------------------------
+INSERT INTO `course_notice` VALUES ('1', 'DIYI NOTICE', 'NOTICE!!! AND NOTICE', '1111111', '1');
+INSERT INTO `course_notice` VALUES ('3', 'new notice', 'new notciedhashdlkasdhasdhfasekl;fhjkl;ashfk;ahsfkl;ashdfaKL;', '1476971897', '1');
 
 -- ----------------------------
 -- Table structure for `migration`
@@ -156,11 +177,10 @@ CREATE TABLE `student_course` (
 -- Records of student_course
 -- ----------------------------
 INSERT INTO `student_course` VALUES ('141304120', '1', '1');
-INSERT INTO `student_course` VALUES ('141304120', '2', '1');
+INSERT INTO `student_course` VALUES ('141304120', '2', '0');
 INSERT INTO `student_course` VALUES ('141304120', '3', '1');
 INSERT INTO `student_course` VALUES ('141304120', '4', '1');
 INSERT INTO `student_course` VALUES ('141304120', '5', '1');
-INSERT INTO `student_course` VALUES ('141304120', '6', '1');
 INSERT INTO `student_course` VALUES ('141304121', '1', '1');
 INSERT INTO `student_course` VALUES ('141304121', '2', '1');
 
@@ -217,11 +237,12 @@ CREATE TABLE `swork_file` (
   PRIMARY KEY (`file_id`),
   KEY `fk_sworkfile_course_id` (`swork_id`),
   CONSTRAINT `fk_sworkfile_course_id` FOREIGN KEY (`swork_id`) REFERENCES `student_work` (`swork_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of swork_file
 -- ----------------------------
+INSERT INTO `swork_file` VALUES ('1', '1', '新建文本文档', 'txt', '1476758930', 'ZJBPLrEZIixTA0ZgupdQlDaeJLcr7dev', '9');
 
 -- ----------------------------
 -- Table structure for `swork_twork`
@@ -307,12 +328,13 @@ CREATE TABLE `twork_file` (
   PRIMARY KEY (`file_id`),
   KEY `twork_id` (`twork_id`),
   CONSTRAINT `twork_file_ibfk_1` FOREIGN KEY (`twork_id`) REFERENCES `teacher_work` (`twork_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of twork_file
 -- ----------------------------
-INSERT INTO `twork_file` VALUES ('1', '7', '新建文本文档', 'txt', '1476708886', 'yEGp6s9NuudKLz2FnACT6VQpfM78X2D5', '3');
+INSERT INTO `twork_file` VALUES ('1', '7', '新建文本文档', 'txt', '1476708886', 'yEGp6s9NuudKLz2FnACT6VQpfM78X2D5', '5');
+INSERT INTO `twork_file` VALUES ('2', '7', '新建文本文档 (2)', 'txt', '1476925448', 'zbSza9J2mES4xFinsv-bdOu85niwq4zW', '1');
 
 -- ----------------------------
 -- Table structure for `user`
