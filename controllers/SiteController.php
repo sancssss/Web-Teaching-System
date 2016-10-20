@@ -80,6 +80,7 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
+            //return $this->renderPartial('//user/index');//登陆成功后，重定向到user试图文件夹下的index，参数问题
         }
         return $this->render('login', [
             'model' => $model,
@@ -103,7 +104,7 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        //重复注册问题的代码设计暂缺
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user = new User();
@@ -179,5 +180,9 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+    public function actionForgotPassword()
+    {
+        return $this->render('forgot-password');
     }
 }
