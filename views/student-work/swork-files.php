@@ -26,7 +26,6 @@ $this->params['breadcrumbs'][] = '附件列表';
             [
                'attribute'=>'fileDownloadLink', 'format'=>'raw' 
             ],
-            'file_download_count'
         ],
     ]); ?>
 </div>

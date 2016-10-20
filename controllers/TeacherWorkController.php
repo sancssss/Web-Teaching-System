@@ -14,10 +14,11 @@ use \app\models\StudentWork;
 use \app\models\Form\TWorkCommentForm;
 use \app\models\SworkTwork;
 use app\models\Course;
-use app\models\TworkFile;
+use app\models\teacher\TworkFileWithTeacher;
 use app\models\SworkFile;
 use app\models\Form\TworkUploadForm;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 /**
  * TeacherWorkController implements the CRUD actions for TeacherWork model.
@@ -247,14 +248,14 @@ class TeacherWorkController extends Controller
     }
     
     /**
-     * 显示课程号为cid的课程列表
-     * @param integer $cid
+     * 显示作业号为$tworkid的作业附件
+     * @param integer $tworkid
      * @return mixed
      */
     public function actionCourseFiles($tworkid)
     {
         $work = $this->findModel($tworkid);
-        $query = TworkFile::find()->where(['twork_id' => $tworkid]);
+        $query = TworkFileWithTeacher::find()->where(['twork_id' => $tworkid]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -263,6 +264,15 @@ class TeacherWorkController extends Controller
             'dataProvider' => $dataProvider,
             'work' => $work,
         ]);
+    }
+    
+    /**
+     * 重定向到真实下载链接
+     */
+    public function actionDownloadTworkFile($fileid)
+    {
+        $file = TworkFileWithTeacher::find()->where(['file_id' => $fileid])->one();
+        return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
     }
 
     /**

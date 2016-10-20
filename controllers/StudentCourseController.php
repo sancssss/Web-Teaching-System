@@ -6,7 +6,8 @@ use app\models\Course;
 use app\models\StudentCourse;
 use app\models\StudentCourseSearch;
 use yii\data\ActiveDataProvider;
-use app\models\CourseFile;
+use app\models\student\CourseFileWithStudent;
+use yii\helpers\Url;
 use Yii;
 
 class StudentCourseController extends \yii\web\Controller
@@ -78,7 +79,7 @@ class StudentCourseController extends \yii\web\Controller
      */
     public function actionCancelCourse($cid)
     {
-        $model = StudentCourse::find(['course_id' => $cid, 'verified' => 0, 'student_number' => Yii::$app->user->getId()])->one();
+        $model = StudentCourse::find()->where(['course_id' => $cid, 'verified' => 0, 'student_number' => Yii::$app->user->getId()])->one();
         if(!$model->delete()){
              Yii::$app->session->setFlash('info', '取消失败.');
         }
@@ -108,7 +109,7 @@ class StudentCourseController extends \yii\web\Controller
     public function actionCourseFiles($cid)
     {
         $course = $this->findModel($cid);
-        $query = CourseFile::find()->where(['course_id' => $cid]);
+        $query = CourseFileWithStudent::find()->where(['course_id' => $cid]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -118,8 +119,18 @@ class StudentCourseController extends \yii\web\Controller
             'course' => $course,
         ]);
     }
-
     
+    /**
+     * 重定向到真实下载链接并且下载数量加一
+     */
+    public function actionDownloadCourseFile($fileid)
+    {
+        $file = CourseFileWithStudent::find()->where(['file_id' => $fileid])->one();
+        $file->file_download_count += 1 ;
+        $file->save();
+        return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
+    }
+   
      /**
      * Finds the Course model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -136,6 +147,5 @@ class StudentCourseController extends \yii\web\Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
     
 }

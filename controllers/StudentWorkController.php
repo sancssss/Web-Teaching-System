@@ -14,11 +14,12 @@ use app\models\Form\SworkUploadForm;
 use yii\web\UploadedFile;
 use \app\models\SworkTwork;
 use app\models\TeacherWork;
-use app\models\TworkFile;
+use app\models\student\TworkFileWithStudent;
 use app\models\SworkFile;
 use app\models\student\WorkWithStudent;
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 /**
  * StudentWorkController implements the CRUD actions for StudentWork model.
  */
@@ -156,7 +157,7 @@ class StudentWorkController extends Controller
         if($work == NULL){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        $query = TworkFile::find()->where(['twork_id' => $tworkid]);
+        $query = TworkFileWithStudent::find()->where(['twork_id' => $tworkid]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -165,6 +166,17 @@ class StudentWorkController extends Controller
             'dataProvider' => $dataProvider,
             'work' => $work,
         ]);
+    }
+    
+    /**
+     * 重定向到真实下载链接并且下载数量加一
+     */
+    public function actionDownloadTworkFile($fileid)
+    {
+        $file = TworkFileWithStudent::find()->where(['file_id' => $fileid])->one();
+        $file->file_download_count += 1;
+        $file->save();
+        return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
     }
     
     /**

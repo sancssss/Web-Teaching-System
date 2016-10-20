@@ -55,7 +55,6 @@ class TworkFile extends \yii\db\ActiveRecord
             'file_upload_time' => '上传时间',
             'file_hash' => 'File Hash',
             'file_download_count' => '下载次数',
-            'fileDownloadLink' => '下载链接'
         ];
     }
 
@@ -67,18 +66,16 @@ class TworkFile extends \yii\db\ActiveRecord
         return $this->hasOne(TeacherWork::className(), ['twork_id' => 'twork_id']);
     }
     
-     //TODO::未进行下载安全加密
+     //TODO:未进行下载安全加密
     /**
-     * 生成当前文件的下载链接
+     * 生成当前文件的action下载链接
      * @return string
      */
     public function getFileDownloadLink()
     {
-        $model =  TworkFile::findOne($this->file_id);
-        $model->file_download_count++;
-        $model->save();
-        $url = Url::to('@web/uploads/'.$this->file_hash.'.'.$this->file_extension);
-        $option = [];
-        return Html::a('下载', $url, $option);
+        $url = Url::to(['student-work/download-twork-file', 'tworkid' => $this->twork_id]);
+        $options =  [];
+        return Html::a('下载', $url, $options);
     }
+    
 }
