@@ -28,6 +28,7 @@ class StudentCourseController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
     /**
      * 显示课程详情：作业/教师/课程
      */
@@ -146,6 +147,5 @@ class StudentCourseController extends \yii\web\Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
+    }    
 }

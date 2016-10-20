@@ -221,7 +221,7 @@ class StudentWorkController extends Controller
      * 为课程号为sworkid的作业上传资料
      * @param integer $sworkid
      */
-    public function actionUploadFile($sworkid)
+    public function actionUploadFile($tworkid)
     {
         $fileModel = new TworkUploadForm();
         $work = $this->findModel($tworkid);

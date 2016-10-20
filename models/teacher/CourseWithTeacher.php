@@ -29,6 +29,7 @@ class CourseWithTeacher extends Course
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
+    
      /**
      * 得到每一个教师课程的详情链接
      * @return Html
