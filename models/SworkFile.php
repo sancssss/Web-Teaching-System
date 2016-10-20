@@ -74,9 +74,6 @@ class SworkFile extends \yii\db\ActiveRecord
      */
     public function getFileDownloadLink()
     {
-        $model =  SworkFile::findOne($this->file_id);
-        $model->file_download_count++;
-        $model->save();
         $url = Url::to('@web/uploads/'.$this->file_hash.'.'.$this->file_extension);
         $option = [];
         return Html::a('下载', $url, $option);

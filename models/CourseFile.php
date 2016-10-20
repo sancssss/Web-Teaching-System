@@ -68,19 +68,16 @@ class CourseFile extends \yii\db\ActiveRecord
         return $this->hasOne(TeacherCourse::className(), ['course_id' => 'course_id']);
     }
     
-    //TODO::未进行下载安全加密
+    //TODO:未进行下载安全加密
     /**
      * 生成当前文件的下载链接
      * @return string
      */
     public function getFileDownloadLink()
     {
-        $model = CourseFile::findOne($this->file_id);
-        $model->file_download_count++;
-        $model->save();
-        $url = Url::to('@web/uploads/'.$this->file_hash.'.'.$this->file_extension);
-        $option = [];
-        return Html::a('下载', $url, $option);
+        $url = Url::to(['student-course/download-course-file', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a('下载', $url, $options);
     }
     
 }

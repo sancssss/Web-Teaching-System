@@ -15,7 +15,8 @@ use app\models\StudentCourse;
 use app\models\Form\LoadStudentForm;
 use app\models\StudentInformation;
 use app\models\Form\CourseUploadForm;
-use app\models\CourseFile;
+use app\models\teacher\CourseFileWithTeacher;
+use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 
@@ -262,7 +263,7 @@ class TeacherCourseController extends Controller
     public function actionCourseFiles($cid)
     {
         $course = $this->findModel($cid);
-        $query = CourseFile::find()->where(['course_id' => $cid]);
+        $query = CourseFileWithTeacher::find()->where(['course_id' => $cid]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -272,6 +273,16 @@ class TeacherCourseController extends Controller
             'course' => $course,
         ]);
     }
+    
+     /**
+     * 重定向到真实下载链接
+     */
+    public function actionDownloadCourseFile($fileid)
+    {
+        $file = CourseFileWithTeacher::find()->where(['file_id' => $fileid])->one();
+        return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
+    }
+   
 
     /**
      * 老师确认某个id的学生的课程申请
