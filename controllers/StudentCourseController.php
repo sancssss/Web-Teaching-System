@@ -7,7 +7,9 @@ use app\models\StudentCourse;
 use app\models\StudentCourseSearch;
 use yii\data\ActiveDataProvider;
 use app\models\student\CourseFileWithStudent;
+use app\models\student\NoticeWithStudent;
 use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 use Yii;
 
 class StudentCourseController extends \yii\web\Controller
@@ -130,6 +132,47 @@ class StudentCourseController extends \yii\web\Controller
         $file->file_download_count += 1 ;
         $file->save();
         return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
+    }
+    
+    /**
+     * 显示学生所选的某门课的通知列表
+     * @param integer $cid 课程号
+     * @return mixed
+     */
+    public function actionCourseNotices($cid){
+        $model = NoticeWithStudent::find()
+                ->innerJoin('student_course', 'student_course.course_id = course_notice.course_id')
+                ->where(['course_notice.course_id' => $cid, 'student_course.student_number' => Yii::$app->user->getId(),])->one();
+        //return print_r($model);
+        if($model == null){
+            throw new NotFoundHttpException('非法请求');
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => NoticeWithStudent::find()->where(['course_id' => $cid]),
+        ]);
+
+        return $this->render('course-notices', [
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+        ]);
+    }
+    
+    /**
+     * 显示个选择课的通知详情
+     * @param integer $id 通知id
+     * @return mixed
+     * @throws NotFoundHttpException 非选择课的通知详情时抛出异常
+     */
+    public function actionNotice($id){
+        $model = NoticeWithStudent::find()
+                ->innerJoin('student_course', 'student_course.course_id = course_notice.course_id')
+                ->where(['course_notice.notice_id' => $id, 'student_course.student_number' => Yii::$app->user->getId(),])->one();
+        if($model == null){
+             throw new NotFoundHttpException('非法请求');
+        }
+        return $this->render('notice', [
+            'model' => $model,
+        ]);
     }
    
      /**

@@ -25,8 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
                'attribute'=>'studentCourseLink', 'format'=>'raw' 
             ],
             'teacherNumber.user_name',
-             [
+            [
                'attribute'=>'courseWorkLink', 'format'=>'raw' 
+            ],
+            [
+               'attribute'=>'noticeLink', 'format'=>'raw' 
             ],
             
         ],
