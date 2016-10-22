@@ -16,14 +16,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
-        'options' => ['class' => 'form-horizontal'],
+        'layout' => 'horizontal',
+        //'options' => ['class' => 'form-horizontal'],
         'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+            'template' => "{label}<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
             'labelOptions' => ['class' => 'col-lg-1 control-label'],
+            'horizontalCssClasses' => [
+            'label' => '',
+            'offset' => 'col-sm-offset-4',
+            'wrapper' => 'col-sm-8',
+            'error' => '',
+            'hint' => '',
         ],
+
+        ],
+        
     ]); ?>
 
-        <?= $form->field($model, 'userid')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'userid')->textInput(['autofocus' => true,]) ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

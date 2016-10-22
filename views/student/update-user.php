@@ -6,14 +6,24 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\DetailView;
 
-$this->title = '完善学生注册信息';
+$this->title = '学生信息更新';
+$this->params['breadcrumbs'][] = ['label' =>  '个人中心', 'url' => ['/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
 
+    <?= DetailView::widget([
+        'model' => $user,
+        'attributes' => [
+            'user_number',
+            'user_name',
+        ],
+    ]) ?>
+    
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'options' => ['class' => 'form-horizontal'],

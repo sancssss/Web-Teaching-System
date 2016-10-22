@@ -1,53 +1,80 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = '扬大师生互动系统';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
 
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <div class="col-md-8">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">最新添加课程</h3>
+                    </div>
+                    <div class="list-group">
+                <?php $i = 0;?>
+                <?php foreach ($courses as $course): ?>
+                        <a href="<?= Url::to(['/teacher-course/course', 'cid' => $course->course_id]) ?>" class="list-group-item ">
+                        <p class="list-group-item-text"><?= Html::encode("{$course->course_name}"); ?></p>
+                        </a>
+                <?php
+                    $i++;
+                    if($i == 5){
+                        break;
+                    }
+                        endforeach; ?>
+               </div>
             </div>
         </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">寻物启事 <span class="badge">3</span></h3>
+                    </div>
+                    <div class="list-group">
 
+                        <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">一则寻物启事</h4>
+                        <p class="list-group-item-text">寻物启事okokok.</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">二则寻物启事</h4>
+                        <p class="list-group-item-text">寻物其实内容.</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">三则寻物启事</h4>
+                        <p class="list-group-item-text">寻物启事内容.</p>
+                        </a>
+                    </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+                      <div class="col-md-8">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">热门课程</h3>
+                    </div>
+                    <div class="list-group">
+                       <?php $i = 0;?>
+                       <?php foreach ($courses as $course): ?>
+                        <a href="<?= Url::to(['/teacher-course/course', 'cid' => $course->course_id]) ?>" class="list-group-item ">
+                        <p class="list-group-item-text"><?= Html::encode("{$course->course_name}"); ?></p>
+                        </a>
+                       <?php
+                        $i++;
+                        if($i == 5)
+                        break;
+                        endforeach; ?>
+                    </div>
+            </div>
+        </div>
+        </div>
     </div>
 </div>

@@ -18,6 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'emptyText' => '暂无数据',
+        'summary' => "总共有{totalCount}门课",
+        'layout' => "{summary}\n{items}\n{pager}",
         'columns' => [
 
             'course_id',

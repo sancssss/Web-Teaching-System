@@ -11,6 +11,7 @@ use app\models\ContactForm;
 use app\models\Form\SignupForm;
 use app\models\User;
 use app\models\StudentInformation;
+use app\models\teacher\CourseWithTeacher;
 
 class SiteController extends Controller
 {
@@ -31,12 +32,7 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+        
         ];
     }
 
@@ -62,8 +58,11 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
+    {   
+        $courses = CourseWithTeacher::find()->all();
+        return $this->render('index',[
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -121,7 +120,7 @@ class SiteController extends Controller
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
                  //跳转到学生信息完善
-                 return $this->redirect('update-student-information');
+                 return $this->redirect('/student/update-user');
             }
             $identity = User::findOne($user->user_number);
             Yii::$app->user->login($identity, 0);
@@ -133,25 +132,6 @@ class SiteController extends Controller
         ]);
     }
     
-    /**
-     * 完善学生信息
-     * @return mixd
-     */
-    public function actionUpdateStudentInformation()
-    {
-        $model = StudentInformation::find(Yii::$app->user->getId())->one();
-        if($model == null){
-           $model = new StudentInformation();
-           $model->student_number = Yii::$app->user->getId();
-        }
-        if($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            Yii::$app->session->setFlash('success', "资料更新成功");
-        }
-        return $this->render('udpate-student-information', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Displays contact page.

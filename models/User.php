@@ -143,4 +143,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'user_number']);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentInformation()
+    {
+        return $this->hasOne(StudentInformation::className(), ['student_number' => 'user_number']);
+    }
 }
