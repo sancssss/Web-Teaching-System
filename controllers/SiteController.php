@@ -7,10 +7,11 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\Form\LoginForm;
-use app\models\ContactForm;
+use app\models\Form\ContactForm;
 use app\models\Form\SignupForm;
 use app\models\User;
 use app\models\StudentInformation;
+use app\models\teacher\CourseWithTeacher;
 
 class SiteController extends Controller
 {
@@ -31,12 +32,7 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+        
         ];
     }
 
@@ -62,8 +58,11 @@ class SiteController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        return $this->render('index');
+    {   
+        $courses = CourseWithTeacher::find()->all();
+        return $this->render('index',[
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -108,10 +107,13 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user = new User();
+            $student = new StudentInformation();
             $user->user_number = $model->userid;
             $user->user_name = $model->username;
             $user->user_password = $model->password;
+            $student->student_number = $model->userid;
             $user->save();
+            $student->save();
             //设置角色
             if($model->isteacher == TRUE){
                  $auth = Yii::$app->authManager;
@@ -122,7 +124,7 @@ class SiteController extends Controller
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
                  //跳转到学生信息完善
-                 return $this->redirect('update-student-information');
+                 return $this->redirect('student/update-user');
             }
             $identity = User::findOne($user->user_number);
             Yii::$app->user->login($identity, 0);
@@ -134,25 +136,6 @@ class SiteController extends Controller
         ]);
     }
     
-    /**
-     * 完善学生信息
-     * @return mixd
-     */
-    public function actionUpdateStudentInformation()
-    {
-        $model = StudentInformation::find(Yii::$app->user->getId())->one();
-        if($model == null){
-           $model = new StudentInformation();
-           $model->student_number = Yii::$app->user->getId();
-        }
-        if($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            Yii::$app->session->setFlash('success', "资料更新成功");
-        }
-        return $this->render('udpate-student-information', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Displays contact page.
@@ -184,5 +167,9 @@ class SiteController extends Controller
     public function actionForgotPassword()
     {
         return $this->render('forgot-password');
+    }
+    public function actionErrorUnregister()
+    {
+        return $this->render('error-unregister');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\Form;
 
 use Yii;
 use yii\base\Model;
@@ -38,7 +38,11 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'name' => '姓名',
+            'Email' => '电子邮箱',
+            'Subject' => '主题',
+            'Body' => '内容',
+            'verifyCode' => '验证码',
         ];
     }
 

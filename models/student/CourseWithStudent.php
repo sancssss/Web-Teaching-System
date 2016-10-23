@@ -26,7 +26,8 @@ class CourseWithStudent extends Course
             'teacherNumber.user_name' => '授课教师',
             'registerLink' => '操作',
             'courseWorkLink' => '作业',
-            'courseFilesLink' => '课程课件'
+            'courseFilesLink' => '课程课件',
+            'noticeLink' => '通知'
         ];
         return array_merge(parent::attributeLabels(), $attributeLabels);
     }
@@ -58,6 +59,10 @@ class CourseWithStudent extends Course
         
     }
     
+    /**
+     * 作业查看链接
+     * @return Html
+     */
     public function getCourseWorkLink()
     {
         $url = Url::to(['/student-work/index', 'cid' => $this->course_id]);
@@ -85,6 +90,17 @@ class CourseWithStudent extends Course
         $url = Url::to(['/student-course/course-files', 'cid' => $this->course_id]);
         $option = [];
         return Html::a('查看课件', $url, $option);
+    }
+    
+    /**
+     * 得到通知查看链接
+     * @return Html
+     */
+    public function getNoticeLink()
+    {
+        $url = Url::to(['/student-course/course-notices', 'cid' => $this->course_id]);
+        $options =  [];
+        return Html::a('查看', $url, $options);
     }
     
 }
