@@ -11,8 +11,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        This is the About page. You may modify the following file to customize its content:
+        扬大师生互助系统是基于yii2.0的开源系统，有任何问题可以联系管理员，其联系方式为:
+    </p>
+    <p>
+        <b>email:admin@example.com</b>
+    </p>
+    <p>
+        <b>phone:12345678910</b>
     </p>
 
-    <code><?= __FILE__ ?></code>
+    <!-- <code><?= __FILE__ ?></code> -->
 </div>

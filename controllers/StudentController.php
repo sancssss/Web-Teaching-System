@@ -54,7 +54,7 @@ class StudentController extends \yii\web\Controller
         if($model != null){
             return $model;
         }
-        throw new NotFoundHttpException('错误操作！');
+        throw new NotFoundHttpException('错误操作！1');
     }
     
     /**
@@ -67,7 +67,7 @@ class StudentController extends \yii\web\Controller
         if($model != null){
             return $model;
         }
-        throw new NotFoundHttpException('错误操作！');
+        throw new NotFoundHttpException('错误操作！2');
     }
 
 }

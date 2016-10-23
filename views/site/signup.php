@@ -39,6 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
                 <?= Html::submitButton('注册', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <?= Html::resetButton('清除', ['class' => 'btn btn-primary', 'name' => 'reset-button'])
+                     ?>
             </div>
         </div>
     <?php if (Yii::$app->session->hasFlash('success')): ?>

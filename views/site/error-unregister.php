@@ -17,11 +17,10 @@ $this->title = $name;
         <?= nl2br(Html::encode($message)) ?>
     </div>
 
-    <p> 
-         The above error occurred while the Web server was processing your request. 
-    </p> 
-    <p> 
-         Please contact us if you think this is a server error. Thank you. 
-    </p> 
+    <p>
+        您似乎还未注册，点击
+        <?= Html::a('这里', ['site/signup']) ?>
+        注册.
+    </p>
 
 </div>

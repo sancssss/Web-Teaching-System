@@ -28,7 +28,7 @@ class StudentInformation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_number', 'student_class'], 'required'],
+            [['student_number'], 'required'],
             [['student_number'], 'integer'],
             [['student_class'], 'string', 'max' => 50],
             [['student_number'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['student_number' => 'user_number']],

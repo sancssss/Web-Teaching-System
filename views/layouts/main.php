@@ -30,8 +30,8 @@ AppAsset::register($this);
         $auth = Yii::$app->authManager;
         $userRole = $auth->getRolesByUser(Yii::$app->user->getId());
         //根据用户权限复制菜单中的url
-        $courseUrl = '/site/error';
-        $personalUrl = '/site/error';
+        $courseUrl = '/site/error-unregister';
+        $personalUrl = '/site/error-unregister';
         if(isset($userRole['teacher'])){
             $courseUrl = '/teacher-course/index';
             $personalUrl = '/teacher/index';
@@ -55,6 +55,21 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => '首页', 'url' => ['/site/index']],
+            ['label' => '关于', 'url' => ['/site/about']],
+            ['label' => '反馈', 'url' => ['/site/contact']],
+            ['label' => '注册', 'url' => ['/site/signup']],
+            Yii::$app->user->isGuest ? (
+                ['label' => '登录', 'url' => ['/site/login']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->user_name . ')',
+                    ['class' => 'btn btn-link']
+                )
+                . Html::endForm()
+                . '</li>'
+            ),
             [
                 'label' => '菜单',
                 'items' => [
@@ -65,8 +80,8 @@ AppAsset::register($this);
                     ['label' => '我的作业', 'url' => ['/']],
                 ]
             ],
-            Yii::$app->user->isGuest ? ['label' => '登录', 'url' => ['/site/login'], 'visible' => Yii::$app->user->isGuest] 
-            : ['label' => '注销('.Yii::$app->user->identity->user_name.')', 'url' => ['/site/logout'], 'visible' => !Yii::$app->user->isGuest],
+            //Yii::$app->user->isGuest ? ['label' => '登录', 'url' => ['/site/login'], 'visible' => Yii::$app->user->isGuest] 
+//            : ['label' => '注销('.Yii::$app->user->identity->user_name.')', 'url' => ['/site/logout'], 'visible' => !Yii::$app->user->isGuest],
         ],
     ]);
     NavBar::end();

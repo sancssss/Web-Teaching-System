@@ -7,7 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\Form\LoginForm;
-use app\models\ContactForm;
+use app\models\Form\ContactForm;
 use app\models\Form\SignupForm;
 use app\models\User;
 use app\models\StudentInformation;
@@ -79,6 +79,7 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
+            //return $this->renderPartial('//user/index');//登陆成功后，重定向到user试图文件夹下的index，参数问题
         }
         return $this->render('login', [
             'model' => $model,
@@ -102,14 +103,17 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        //重复注册问题的代码设计暂缺
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user = new User();
+            $student = new StudentInformation();
             $user->user_number = $model->userid;
             $user->user_name = $model->username;
             $user->user_password = $model->password;
+            $student->student_number = $model->userid;
             $user->save();
+            $student->save();
             //设置角色
             if($model->isteacher == TRUE){
                  $auth = Yii::$app->authManager;
@@ -120,7 +124,7 @@ class SiteController extends Controller
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
                  //跳转到学生信息完善
-                 return $this->redirect('/student/update-user');
+                 return $this->redirect('student/update-user');
             }
             $identity = User::findOne($user->user_number);
             Yii::$app->user->login($identity, 0);
@@ -159,5 +163,13 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+    public function actionForgotPassword()
+    {
+        return $this->render('forgot-password');
+    }
+    public function actionErrorUnregister()
+    {
+        return $this->render('error-unregister');
     }
 }
