@@ -190,7 +190,7 @@ INSERT INTO `student_course` VALUES ('141304121', '2', '1');
 DROP TABLE IF EXISTS `student_information`;
 CREATE TABLE `student_information` (
   `student_number` int(12) NOT NULL COMMENT '学号',
-  `student_class` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '班级',
+  `student_class` varchar(50) CHARACTER SET utf8 COMMENT '班级',
   PRIMARY KEY (`student_number`),
   CONSTRAINT `fk_stuinfo_student_number` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk;

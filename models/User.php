@@ -11,7 +11,7 @@ use yii\web\IdentityInterface;
  * @property integer $user_number
  * @property string $user_name
  * @property string $user_password
- * @property string $user_authKey
+ * @property string $user_authKey 
  *
  * @property AuthAssignment[] $authAssignments
  * @property AuthItem[] $itemNames
@@ -62,8 +62,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             if ($this->isNewRecord) {
                 $this->user_authKey = Yii::$app->security->generateRandomString();
                 $this->user_password = md5($this->user_password);
+                return true;
             }
-            return true;
+            return false;
         }
         return false;
     }
