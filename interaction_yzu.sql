@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2016-10-20 21:59:47
+Date: 2016-10-24 13:30:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,6 +123,59 @@ CREATE TABLE `course_file` (
 INSERT INTO `course_file` VALUES ('3', '1', '新建文本文档', 'txt', '1476704970', '8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_', '11');
 
 -- ----------------------------
+-- Table structure for `course_message`
+-- ----------------------------
+DROP TABLE IF EXISTS `course_message`;
+CREATE TABLE `course_message` (
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
+  `message_title` varchar(50) NOT NULL COMMENT '留言标题',
+  `message_content` varchar(1000) NOT NULL COMMENT '留言内容',
+  `message_date` int(11) NOT NULL,
+  PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of course_message
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `course_message_node`
+-- ----------------------------
+DROP TABLE IF EXISTS `course_message_node`;
+CREATE TABLE `course_message_node` (
+  `node_id` int(11) NOT NULL AUTO_INCREMENT,
+  `prior_id` int(11) NOT NULL,
+  `messgae_title` varchar(50) DEFAULT NULL,
+  `message_content` varchar(1000) NOT NULL,
+  `messgae_date` int(11) NOT NULL,
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of course_message_node
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `course_message_student`
+-- ----------------------------
+DROP TABLE IF EXISTS `course_message_student`;
+CREATE TABLE `course_message_student` (
+  `message_id` int(11) NOT NULL,
+  `student_number` int(11) NOT NULL,
+  `course_id` int(12) unsigned NOT NULL,
+  PRIMARY KEY (`message_id`),
+  KEY `student_number` (`student_number`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `course_message_student_ibfk_1` FOREIGN KEY (`message_id`) REFERENCES `course_message` (`message_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `course_message_student_ibfk_2` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `course_message_student_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
+
+-- ----------------------------
+-- Records of course_message_student
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `course_notice`
 -- ----------------------------
 DROP TABLE IF EXISTS `course_notice`;
@@ -171,13 +224,13 @@ CREATE TABLE `student_course` (
   KEY `fk_coures` (`course_id`),
   CONSTRAINT `fk_coures` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stu` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student_course
 -- ----------------------------
 INSERT INTO `student_course` VALUES ('141304120', '1', '1');
-INSERT INTO `student_course` VALUES ('141304120', '2', '0');
+INSERT INTO `student_course` VALUES ('141304120', '2', '1');
 INSERT INTO `student_course` VALUES ('141304120', '3', '1');
 INSERT INTO `student_course` VALUES ('141304120', '4', '1');
 INSERT INTO `student_course` VALUES ('141304120', '5', '1');

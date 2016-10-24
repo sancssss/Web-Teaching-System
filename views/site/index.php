@@ -8,9 +8,22 @@ $this->title = '扬大师生互动系统';
 ?>
 <div class="site-index">
 
-
     <div class="body-content">
-
+        <div class="row">
+            <div class="col-md-12">
+               <div class="jumbotron">
+		<h1>
+                   扬州大学师生互动系统
+                </h1>
+                <p>
+                   欢迎使用扬州大学师生互动系统！
+		</p>
+                <p>
+                    <a class="btn btn-primary btn-large" href="#">了解更多</a>
+                </p>
+		</div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-8">
                 <div class="panel panel-info">
@@ -76,5 +89,5 @@ $this->title = '扬大师生互动系统';
             </div>
         </div>
         </div>
-    </div>
+</div>
 </div>

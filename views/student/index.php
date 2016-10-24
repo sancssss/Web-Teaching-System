@@ -14,9 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('更新个人资料', ['update-user'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('更新资料', ['update-user'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('我的课程', ['/student-course/index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('未交作业(1)', ['/student-work/unfinished-works'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('未读通知(2)', ['/student-course/unread-notices'], ['class' => 'btn btn-info']) ?>
     </p>
-
+    <div class="grid-view">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -25,5 +28,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'studentInformation.student_class',
         ],
     ]) ?>
-
+    </div>
 </div>

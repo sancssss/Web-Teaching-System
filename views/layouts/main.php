@@ -78,9 +78,9 @@ AppAsset::register($this);
              'homeLink' => ['label' => '首页',
                             'url' => '/'
                 ],
-        ]) ?>
+            ]) ?>
         <?= $content ?>
-    </div>
+</div>
 </div>
 
 <footer class="footer">

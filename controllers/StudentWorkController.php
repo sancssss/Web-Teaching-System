@@ -283,6 +283,22 @@ class StudentWorkController extends Controller
             'pagination' => $pagination,
         ]);        
     }
+    
+    /**
+     * 显示未完成的作业
+     * @return mixed
+     */
+    public function actionUnfinishedWorks(){
+        $query = WorkWithStudent::find()
+                ->innerJoinWith('sworks')
+                ->where(['user_number' => Yii::$app->user->getId()]);
+         $dataProvider = new ActiveDataProvider([
+           'query' => $query, 
+        ]);
+        return $this->render('unfinshed-works', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Finds the StudentWork model based on its primary key value.
