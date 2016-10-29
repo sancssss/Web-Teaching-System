@@ -289,11 +289,15 @@ class StudentWorkController extends Controller
      * @return mixed
      */
     public function actionUnfinishedWorks(){
-        $query = WorkWithStudent::find()
-                ->innerJoinWith('sworks')
-                ->where(['user_number' => Yii::$app->user->getId()]);
+        //然首先看当前用户的课对应布置的全部作业
+        //得到当前用户完成的全部作业
+        //用布置作业减去完成的作业得到未提交作业
+        $myWorks = SworkTwork::find()->innerJoinWith('swork')->where(['student_work.user_number' => Yii::$app->user->getId()])->all();
+        $allWorks = WorkWithStudent::find()
+                ->innerJoin('student_course', 'student_course.course_id = teacher_work.course_id')
+                ->where(['not in', 'twork_id', $myWorks]);
          $dataProvider = new ActiveDataProvider([
-           'query' => $query, 
+           'query' => $allWorks, 
         ]);
         return $this->render('unfinshed-works', [
             'dataProvider' => $dataProvider,

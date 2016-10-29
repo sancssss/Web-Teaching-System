@@ -51,7 +51,7 @@ class TWorkForm extends Model
      */
     public function getCourseName()
     {
-        return Course::find($this->course_id)->one()->course_name;
+        return Course::find()->where(['course_id' => $this->course_id,])->one()->course_name;
         
 }
     
