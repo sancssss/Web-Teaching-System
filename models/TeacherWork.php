@@ -58,6 +58,7 @@ class TeacherWork extends \yii\db\ActiveRecord
             'course_id' => '课程号',
             'usersLink' => '提交数量',
             'tworkFilesLink' => '附件',
+            'twork_deadline' => '截止时间'
         ];
     }
     /**

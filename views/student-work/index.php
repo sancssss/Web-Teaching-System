@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = '全部作业';
             ],
             //'twork_content',
             'twork_date:date',
+            'twork_deadline:date',
              [
                'attribute'=>'commitWorkLink', 'format'=>'raw' 
             ],

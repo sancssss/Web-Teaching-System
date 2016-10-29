@@ -15,6 +15,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'deadline_mon')->textInput(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'deadline_day')->textInput(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('发布', ['btn btn-success']) ?>

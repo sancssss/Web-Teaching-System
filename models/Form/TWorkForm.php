@@ -20,6 +20,8 @@ class TWorkForm extends Model
     public $course_id;
     public $course_name;
     public $twork_id;
+    public $deadline_day;
+    public $deadline_mon;
 
 
     /**
@@ -28,9 +30,11 @@ class TWorkForm extends Model
     public function rules()
     {
         return [
-            [['title', 'content'], 'required'],
+            [['title', 'content', 'deadline_mon', 'deadline_day'], 'required'],
+            [['deadline_day'], 'number', 'min' => '1', 'max' => '31'],
+            [['deadline_mon'], 'number', 'min' => '1', 'max' => '12'],
             [['title'], 'string', 'min' => '2', 'max' => '255'],
-            [['content'], 'string', 'min' => '10', 'max' => '20000']
+            [['content'], 'string', 'min' => '1', 'max' => '20000']
         ];
     }
 
@@ -42,6 +46,8 @@ class TWorkForm extends Model
         return [
             'title' => '作业题目',
             'content' => '作业要求',
+            'deadline_day' => '截止日',
+            'deadline_mon' => '截止月'
         ];
     }
     

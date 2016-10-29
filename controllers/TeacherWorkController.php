@@ -102,10 +102,13 @@ class TeacherWorkController extends Controller
             if(!$teacherWork->isBelongToTeacher(Yii::$app->user->getId())){
               throw new NotFoundHttpException('非法请求');
             }
+            $deadline_year = date('Y', time());
+            $deadline = strtotime($deadline_year.'-'.$model->deadline_mon.'-'.$model->deadline_day);
             $teacherWork->twork_title = $model->title;
             $teacherWork->twork_content = $model->content;
             $teacherWork->twork_date = time();
             $teacherWork->course_id = $cid;
+            $teacherWork->twork_deadline = $deadline;
             if(!$teacherWork->save())
             {
                 throw new NotFoundHttpException(Yii::trace($teacherWork->getErrors()));

@@ -70,7 +70,9 @@ class StudentWork extends \yii\db\ActiveRecord
         //课程与学生归属正确返回true且必须为确认了的学生
         $isBelong = StudentCourse::find()->innerJoin('teacher_work', 'teacher_work.course_id = student_course.course_id')
                 ->where(['student_course.student_number' => $usernumber, 'student_course.verified' => 1, 'teacher_work.twork_id' => $tworkid]);
-        if(!$isTworkidExist || $isRepeatSubmit || !$isBelong){
+        //提交没有超时
+        $isNotDeadline = (TeacherWork::find()->where(['twork_id' => $tworkid])->one()->twork_deadline < time());
+        if(!$isTworkidExist || $isRepeatSubmit || !$isBelong || $isNotDeadline){
             return FALSE; 
         }else{
             return TRUE;
