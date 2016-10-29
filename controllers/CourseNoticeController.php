@@ -6,6 +6,8 @@ use app\models\teacher\NoticeWithTeacher;
 use yii\data\ActiveDataProvider;
 use app\models\Form\NoticeForm;
 use yii\web\NotFoundHttpException;
+use app\models\CourseNoticeBroadcast;
+use app\models\StudentCourse;
 
 class CourseNoticeController extends \yii\web\Controller
 {
@@ -89,6 +91,37 @@ class CourseNoticeController extends \yii\web\Controller
            'index',
            'cid' => $model->course_id,
         ]);
+    }
+    
+    public function actionPushNotice($id){
+        $this->pushNoticesToStudent($id);
+        return $this->redirect(['notice', 'id' => $id]);
+    }
+    
+    /**
+     * 发送全部通知到选课学生
+     * @param $id 通知编号
+     */
+    public function pushNoticesToStudent($id){
+        $model = $this->findModel($id);
+        $students = StudentCourse::find()->where(['course_Id' => $model->course_id])->all();
+        //TODO:未解决多条插入性能问题
+        //TODO:未解决发送失败的具体详情
+        $countSuccess = 0;
+        foreach ($students as $student){
+            $addBroadcast = new CourseNoticeBroadcast();
+            $addBroadcast->is_read = 0;
+            $addBroadcast->notice_id = $id;
+            $addBroadcast->student_number = $student->student_number;
+            if($addBroadcast->save()){
+                $countSuccess++;
+            }
+        }
+        Yii::$app->session->setFlash('success', '成功为'.$countSuccess.'名选课学生推送数据');
+        if($countSuccess == 0){
+            Yii::$app->session->setFlash('success', '未导入有效数据');
+        }
+        return true;
     }
 
 

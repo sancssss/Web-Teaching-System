@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('更新资料', ['update-user'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('我的课程', ['/student-course/index'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('未交作业(1)', ['/student-work/unfinished-works'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('未读通知(2)', ['/student-course/unread-notices'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('未交作业', ['/student-work/unfinished-works'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('未读通知', ['/student-course/all-course-notices', 'status' => 0], ['class' => 'btn btn-info']) ?>
     </p>
     <div class="grid-view">
     <?= DetailView::widget([

@@ -5,10 +5,13 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = $model->course->course_name.'的通知';
-$this->params['breadcrumbs'][] = ['label' => '我的课程', 'url' => ['/student-course/index']];
-$this->params['breadcrumbs'][] = ['label' =>  $model->course->course_name, 'url' => ['/student-course/course', 'cid' => $model->course->course_id]];
+if($noticeStatus == 0){
+    $title = '未读通知';
+}else{
+    $title = '已读通知';
+}
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label' => '个人中心', 'url' => ['/student/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">

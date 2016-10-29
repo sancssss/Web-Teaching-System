@@ -60,4 +60,12 @@ class CourseNotice extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Course::className(), ['course_id' => 'course_id']);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourseNoticeBroadcasts()
+    {
+        return $this->hasMany(CourseNoticeBroadcast::className(), ['notice_id' => 'notice_id']);
+    }
 }
