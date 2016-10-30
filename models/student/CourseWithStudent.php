@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use app\models\Course;
+use app\models\StudentCourse;
 
 /**
  * This is the model class for table "teacher_course".
@@ -42,6 +43,7 @@ class CourseWithStudent extends Course
         return Html::a($this->course_name, $url, $options);
     }
     
+    //TODO:待优化的结构：不应该在model出现session操作
     /**
      * 获取选课的情况依据情况生成不同说明
      * @return Html
@@ -50,7 +52,7 @@ class CourseWithStudent extends Course
     {
         $url = Url::to(['/student-course/cancel-course', 'cid' => $this->course_id]);
         $options = [];
-        if($this->studentCourses->verified == 1)
+        if(StudentCourse::find()->where(['course_id' => $this->course_id, 'student_number' => Yii::$app->user->getId()])->one()->verified == 1)
         {
             return '已审核';
         }else{

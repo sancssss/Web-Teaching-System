@@ -115,15 +115,17 @@ class SiteController extends Controller
                  $auth = Yii::$app->authManager;
                  $userRole = $auth->getRole('nochecked_teacher');
                  $auth->assign($userRole, $user->user_number);
+                 $identity = User::findOne($user->user_number);
+                 Yii::$app->user->login($identity, 0);
             }else{
                  $auth = Yii::$app->authManager;
                  $userRole = $auth->getRole('student');
                  $auth->assign($userRole, $user->user_number);
+                 $identity = User::findOne($user->user_number);
+                 Yii::$app->user->login($identity, 0);
                  //跳转到学生信息完善
-                 return $this->redirect('/student/update-user');
+                 return $this->redirect(['/student/update-user']);
             }
-            $identity = User::findOne($user->user_number);
-            Yii::$app->user->login($identity, 0);
             Yii::$app->session->setFlash('success', "注册成功");
             //return $this->goBack();
         }

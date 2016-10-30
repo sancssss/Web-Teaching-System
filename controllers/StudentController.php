@@ -63,11 +63,8 @@ class StudentController extends \yii\web\Controller
      * @throws NotFoundHttpException
      */
     protected function findStudentinfoModel(){
-        $model= StudentInformation::find()->where(['student_number' => Yii::$app->user->getId()])->one();
-        if($model != null){
-            return $model;
-        }
-        throw new NotFoundHttpException('错误操作！');
+        $model= StudentInformation::find()->where(['student_number' => Yii::$app->user->getId()])->one(); 
+        return $model;
     }
 
 }

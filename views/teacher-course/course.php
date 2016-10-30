@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = '课程详情';
             'course_id',
             'courseUserCountLink:raw',
             'teacherNumber.user_name',
-            'course_content:ntext',
+            'course_content:html',
             'courseWorksLink:raw',
             'courseFilesLink:raw'
         ],

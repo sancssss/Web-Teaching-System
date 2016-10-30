@@ -5,6 +5,8 @@ namespace app\models;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use app\models\StudentCourse;
+use app\models\SworkTwork;
+
 /**
  * This is the model class for table "student_work".
  *
@@ -76,6 +78,21 @@ class StudentWork extends \yii\db\ActiveRecord
             return FALSE; 
         }else{
             return TRUE;
+        }
+    }
+    
+    
+    /**
+     * 检查作业是否可以更新提交
+     * @param $id 学生作业id
+     * @param $usernumber 学生学号
+     */
+    public function checkCanUpdate($id, $usernumber){
+        $tworkDeadline = SworkTwork::find()->where(['swork_id' => $id])->one()->twork->twork_deadline;
+        if(time() > $tworkDeadline){
+            return false;
+        }else{
+            return true;
         }
     }
     

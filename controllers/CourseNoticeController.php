@@ -8,6 +8,7 @@ use app\models\Form\NoticeForm;
 use yii\web\NotFoundHttpException;
 use app\models\CourseNoticeBroadcast;
 use app\models\StudentCourse;
+use app\models\teacher\CourseWithTeacher;
 
 class CourseNoticeController extends \yii\web\Controller
 {
@@ -18,9 +19,6 @@ class CourseNoticeController extends \yii\web\Controller
      public function actionIndex($cid)
     {
         $model = $this->findModelByCid($cid);
-        if($model == null){
-            throw new NotFoundHttpException('非法请求');
-        }
         $dataProvider = new ActiveDataProvider([
             'query' => NoticeWithTeacher::find()
                 ->where(['course_id' => $cid]),
@@ -127,19 +125,16 @@ class CourseNoticeController extends \yii\web\Controller
 
     
     /**
-     * 通过课程号返回通知实例
+     * 通过课程号返回实例
      * @param 课程号 integer $cid
      * @return array
      * @throws NotFoundHttpException 当不是当前老师的课程时抛出异常
      */
     protected  function findModelByCid($cid){
-        $model = NoticeWithTeacher::find()
-                ->innerJoinWith('course')
-                ->where(['teacher_course.course_id' => $cid, 'teacher_course.teacher_number' => Yii::$app->user->getId(), 'course_notice.course_Id' => $cid])->one();
-        if($model == null){
+        if(($course = CourseWithTeacher::find()->where(['course_id' => $cid, 'teacher_number' => Yii::$app->user->getId()])->one()) == NULL){
             throw new NotFoundHttpException('非法请求');
         }else{
-            return $model;
+            return $course;
         }  
     }
 

@@ -89,7 +89,7 @@ class TeacherCourseController extends Controller
                 $this->verifiedItem(ArrayHelper::toArray(json_decode($selectionData[$i]))['student_number'], ArrayHelper::toArray(json_decode($selectionData[$i]))['course_id']);
             }
         }
-        $query = StudentCourse::find(['course_id' => $cid])->where([ 'verified' => '0' ]);
+        $query = StudentCourse::find()->where(['course_id' => $cid, 'verified' => '0']);
         $model = Course::findOne($cid);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -136,8 +136,9 @@ class StudentWorkController extends Controller
     public function actionUpdateSwork($id)
     {
         $model = $this->findModel($id);
+        
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->checkCanUpdate($id, Yii::$app->user->getId()) && $model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['work', 'id' => $model->swork_id]);
         } else {
             return $this->render('update-swork', [
@@ -197,6 +198,7 @@ class StudentWorkController extends Controller
         ]);
     }
     
+    //TODO:检查失败后不成功没有提示
     /**
      * 提交学生端的附件
      */
@@ -204,7 +206,7 @@ class StudentWorkController extends Controller
     {
         $fileModel = new SworkUploadForm();
         $work = $this->findModel($sworkid);     
-        if(Yii::$app->request->isPost){
+        if(Yii::$app->request->isPost && $work->checkCanUpdate($sworkid, Yii::$app->user->getId())){
             $fileModel->mutiFiles = UploadedFile::getInstances($fileModel, 'mutiFiles');
             //upload方法内验证
             if($fileModel->upload($sworkid)){
@@ -250,39 +252,6 @@ class StudentWorkController extends Controller
             ]);
     }
     
-    /**
-     * 显示学生所选老师的作业,为0时显示全部选课老师作业
-     * @param integer $teacherid为老师的id
-     * @return mixed
-     */
-    public function actionShowWorks($teacherid=0)
-    {
-        if($teacherid == 0){
-            //得到当前学生授权老师的全部作业
-            $model = TeacherWork::find()
-                    ->join('INNER JOIN', 'student_teacher', 'student_teacher.teacher_number = teacher_work.user_number')
-                    ->where(['student_number' => Yii::$app->user->getId(), 'verified' => 1]);
-        }else{
-            //得到当前学生指定的授权老师的全部作业
-            $model = TeacherWork::find()
-                    ->join('INNER JOIN', 'student_teacher', 'student_teacher.teacher_number = teacher_work.user_number')
-                    ->where(['student_number' => Yii::$app->user->getId(), 'teacher_number' => $teacherid, 'verified' => 1]);
-        }
-        
-        $pagination = new Pagination([
-            'defaultPageSize' => 8,
-            'totalCount' => $model->count(),
-        ]);
-        
-        $works = $model->orderBy('twork_id')
-                       ->offset($pagination->offset)
-                       ->limit($pagination->limit)
-                       ->all();
-        return $this->render('show-works',[
-            'works' => $works,
-            'pagination' => $pagination,
-        ]);        
-    }
     
     /**
      * 显示未完成的作业

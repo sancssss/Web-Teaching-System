@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = '创建通知';
 $this->params['breadcrumbs'][] = ['label' => '我的课程', 'url' => ['/teacher-course/index']];
-$this->params['breadcrumbs'][] = ['label' =>  $model->course->course_name, 'url' => ['/teacher-course/course', 'cid' => $model->course->course_id]];
+$this->params['breadcrumbs'][] = ['label' =>  $model->course_name, 'url' => ['/teacher-course/course', 'cid' => $model->course_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="notice-create">
