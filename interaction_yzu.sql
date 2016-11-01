@@ -1,24 +1,30 @@
-/*
-Navicat MySQL Data Transfer
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: 127.0.0.1 (MySQL 5.7.16)
+# Database: interaction_yzu
+# Generation Time: 2016-11-01 10:38:32 +0000
+# ************************************************************
 
-Source Server         : localhost_3306
-Source Server Version : 50540
-Source Host           : localhost:3306
-Source Database       : interaction_yzu
 
-Target Server Type    : MYSQL
-Target Server Version : 50540
-File Encoding         : 65001
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-Date: 2016-10-24 13:30:10
-*/
 
-SET FOREIGN_KEY_CHECKS=0;
+# Dump of table auth_assignment
+# ------------------------------------------------------------
 
--- ----------------------------
--- Table structure for `auth_assignment`
--- ----------------------------
 DROP TABLE IF EXISTS `auth_assignment`;
+
 CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(12) NOT NULL,
@@ -29,20 +35,28 @@ CREATE TABLE `auth_assignment` (
   CONSTRAINT `user_id_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Records of auth_assignment
--- ----------------------------
-INSERT INTO `auth_assignment` VALUES ('student', '141304120', '1475332431');
-INSERT INTO `auth_assignment` VALUES ('student', '141304121', '1475480652');
-INSERT INTO `auth_assignment` VALUES ('student', '141304122', '1475569978');
-INSERT INTO `auth_assignment` VALUES ('student', '141304123', '1475570067');
-INSERT INTO `auth_assignment` VALUES ('teacher', '123456', '1475370417');
-INSERT INTO `auth_assignment` VALUES ('teacher', '123457', '1475480530');
+LOCK TABLES `auth_assignment` WRITE;
+/*!40000 ALTER TABLE `auth_assignment` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `auth_item`
--- ----------------------------
+INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`)
+VALUES
+	('student',141304120,1475332431),
+	('student',141304121,1475480652),
+	('student',141304122,1475569978),
+	('student',141304123,1475570067),
+	('student',141304128,1477835741),
+	('teacher',123456,1475370417),
+	('teacher',123457,1475480530);
+
+/*!40000 ALTER TABLE `auth_assignment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table auth_item
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `auth_item`;
+
 CREATE TABLE `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `type` int(11) NOT NULL,
@@ -57,19 +71,26 @@ CREATE TABLE `auth_item` (
   CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Records of auth_item
--- ----------------------------
-INSERT INTO `auth_item` VALUES ('admin', '1', null, null, null, '1475328607', '1475328607');
-INSERT INTO `auth_item` VALUES ('nochecked_teacher', '1', null, null, null, '1475328913', '1475328913');
-INSERT INTO `auth_item` VALUES ('student', '1', null, null, null, '1475328606', '1475328606');
-INSERT INTO `auth_item` VALUES ('studentmonitor', '1', null, null, null, '1475328607', '1475328607');
-INSERT INTO `auth_item` VALUES ('teacher', '1', null, null, null, '1475328607', '1475328607');
+LOCK TABLES `auth_item` WRITE;
+/*!40000 ALTER TABLE `auth_item` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `auth_item_child`
--- ----------------------------
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`)
+VALUES
+	('admin',1,NULL,NULL,NULL,1475328607,1475328607),
+	('nochecked_teacher',1,NULL,NULL,NULL,1475328913,1475328913),
+	('student',1,NULL,NULL,NULL,1475328606,1475328606),
+	('studentmonitor',1,NULL,NULL,NULL,1475328607,1475328607),
+	('teacher',1,NULL,NULL,NULL,1475328607,1475328607);
+
+/*!40000 ALTER TABLE `auth_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table auth_item_child
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `auth_item_child`;
+
 CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -79,15 +100,22 @@ CREATE TABLE `auth_item_child` (
   CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Records of auth_item_child
--- ----------------------------
-INSERT INTO `auth_item_child` VALUES ('studentmonitor', 'student');
+LOCK TABLES `auth_item_child` WRITE;
+/*!40000 ALTER TABLE `auth_item_child` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `auth_rule`
--- ----------------------------
+INSERT INTO `auth_item_child` (`parent`, `child`)
+VALUES
+	('studentmonitor','student');
+
+/*!40000 ALTER TABLE `auth_item_child` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table auth_rule
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `auth_rule`;
+
 CREATE TABLE `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` text COLLATE utf8_unicode_ci,
@@ -96,14 +124,13 @@ CREATE TABLE `auth_rule` (
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Records of auth_rule
--- ----------------------------
 
--- ----------------------------
--- Table structure for `course_file`
--- ----------------------------
+
+# Dump of table course_file
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `course_file`;
+
 CREATE TABLE `course_file` (
   `file_id` int(12) NOT NULL AUTO_INCREMENT,
   `course_id` int(12) unsigned NOT NULL,
@@ -115,17 +142,24 @@ CREATE TABLE `course_file` (
   PRIMARY KEY (`file_id`),
   KEY `fk_coursefile_course_id` (`course_id`),
   CONSTRAINT `fk_coursefile_course_id` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of course_file
--- ----------------------------
-INSERT INTO `course_file` VALUES ('3', '1', '新建文本文档', 'txt', '1476704970', '8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_', '11');
+LOCK TABLES `course_file` WRITE;
+/*!40000 ALTER TABLE `course_file` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `course_message`
--- ----------------------------
+INSERT INTO `course_file` (`file_id`, `course_id`, `file_name`, `file_extension`, `file_upload_time`, `file_hash`, `file_download_count`)
+VALUES
+	(3,1,'新建文本文档','txt',1476704970,'8iqzC3Vh7l4xgdo4IBTRZAnn_0uSoWo_',11);
+
+/*!40000 ALTER TABLE `course_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table course_message
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `course_message`;
+
 CREATE TABLE `course_message` (
   `message_id` int(11) NOT NULL AUTO_INCREMENT,
   `message_title` varchar(50) NOT NULL COMMENT '留言标题',
@@ -134,14 +168,13 @@ CREATE TABLE `course_message` (
   PRIMARY KEY (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of course_message
--- ----------------------------
 
--- ----------------------------
--- Table structure for `course_message_node`
--- ----------------------------
+
+# Dump of table course_message_node
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `course_message_node`;
+
 CREATE TABLE `course_message_node` (
   `node_id` int(11) NOT NULL AUTO_INCREMENT,
   `prior_id` int(11) NOT NULL,
@@ -151,14 +184,13 @@ CREATE TABLE `course_message_node` (
   PRIMARY KEY (`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of course_message_node
--- ----------------------------
 
--- ----------------------------
--- Table structure for `course_message_student`
--- ----------------------------
+
+# Dump of table course_message_student
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `course_message_student`;
+
 CREATE TABLE `course_message_student` (
   `message_id` int(11) NOT NULL,
   `student_number` int(11) NOT NULL,
@@ -171,16 +203,15 @@ CREATE TABLE `course_message_student` (
   CONSTRAINT `course_message_student_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of course_message_student
--- ----------------------------
 
--- ----------------------------
--- Table structure for `course_notice`
--- ----------------------------
+
+# Dump of table course_notice
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `course_notice`;
+
 CREATE TABLE `course_notice` (
-  `notice_id` int(12) NOT NULL AUTO_INCREMENT,
+  `notice_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `notice_title` varchar(255) CHARACTER SET gbk NOT NULL COMMENT '标题',
   `notice_content` text CHARACTER SET gbk NOT NULL COMMENT '内容',
   `notice_date` varchar(255) CHARACTER SET gbk NOT NULL COMMENT '时间',
@@ -188,34 +219,82 @@ CREATE TABLE `course_notice` (
   PRIMARY KEY (`notice_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `course_notice_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of course_notice
--- ----------------------------
-INSERT INTO `course_notice` VALUES ('1', 'DIYI NOTICE', 'NOTICE!!! AND NOTICE', '1111111', '1');
-INSERT INTO `course_notice` VALUES ('3', 'new notice', 'new notciedhashdlkasdhasdhfasekl;fhjkl;ashfk;ahsfkl;ashdfaKL;', '1476971897', '1');
+LOCK TABLES `course_notice` WRITE;
+/*!40000 ALTER TABLE `course_notice` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `migration`
--- ----------------------------
+INSERT INTO `course_notice` (`notice_id`, `notice_title`, `notice_content`, `notice_date`, `course_id`)
+VALUES
+	(1,'DIYI NOTICE','NOTICE!!! AND NOTICE','1111111',1),
+	(3,'new notice','new notciedhashdlkasdhasdhfasekl;fhjkl;ashfk;ahsfkl;ashdfaKL;','1476971897',1),
+	(4,'测试计算机导论的通知','测试计算机导论的通知测试计算机导论的通知','1477833679',2),
+	(5,'Java通知测试','java通知测试发送','1477833922',4);
+
+/*!40000 ALTER TABLE `course_notice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table course_notice_broadcast
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `course_notice_broadcast`;
+
+CREATE TABLE `course_notice_broadcast` (
+  `notice_id` int(11) unsigned NOT NULL,
+  `student_number` int(12) NOT NULL,
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`notice_id`,`student_number`,`is_read`),
+  KEY `student_number` (`student_number`),
+  CONSTRAINT `course_notice_broadcast_ibfk_2` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `course_notice_broadcast_ibfk_3` FOREIGN KEY (`notice_id`) REFERENCES `course_notice` (`notice_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `course_notice_broadcast` WRITE;
+/*!40000 ALTER TABLE `course_notice_broadcast` DISABLE KEYS */;
+
+INSERT INTO `course_notice_broadcast` (`notice_id`, `student_number`, `is_read`)
+VALUES
+	(1,141304120,1),
+	(3,141304120,1),
+	(4,141304120,1),
+	(5,141304120,0),
+	(1,141304121,0),
+	(3,141304121,0),
+	(4,141304121,0);
+
+/*!40000 ALTER TABLE `course_notice_broadcast` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table migration
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `migration`;
+
 CREATE TABLE `migration` (
   `version` varchar(180) NOT NULL,
   `apply_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=MyISAM DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of migration
--- ----------------------------
-INSERT INTO `migration` VALUES ('m000000_000000_base', '1475323392');
-INSERT INTO `migration` VALUES ('m140506_102106_rbac_init', '1475323523');
+LOCK TABLES `migration` WRITE;
+/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `student_course`
--- ----------------------------
+INSERT INTO `migration` (`version`, `apply_time`)
+VALUES
+	('m000000_000000_base',1475323392),
+	('m140506_102106_rbac_init',1475323523);
+
+/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table student_course
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `student_course`;
+
 CREATE TABLE `student_course` (
   `student_number` int(12) NOT NULL COMMENT '学生学号',
   `course_id` int(12) unsigned NOT NULL AUTO_INCREMENT COMMENT '课程号',
@@ -224,23 +303,32 @@ CREATE TABLE `student_course` (
   KEY `fk_coures` (`course_id`),
   CONSTRAINT `fk_coures` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_stu` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of student_course
--- ----------------------------
-INSERT INTO `student_course` VALUES ('141304120', '1', '1');
-INSERT INTO `student_course` VALUES ('141304120', '2', '1');
-INSERT INTO `student_course` VALUES ('141304120', '3', '1');
-INSERT INTO `student_course` VALUES ('141304120', '4', '1');
-INSERT INTO `student_course` VALUES ('141304120', '5', '1');
-INSERT INTO `student_course` VALUES ('141304121', '1', '1');
-INSERT INTO `student_course` VALUES ('141304121', '2', '1');
+LOCK TABLES `student_course` WRITE;
+/*!40000 ALTER TABLE `student_course` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `student_information`
--- ----------------------------
+INSERT INTO `student_course` (`student_number`, `course_id`, `verified`)
+VALUES
+	(141304120,1,1),
+	(141304120,2,1),
+	(141304120,3,1),
+	(141304120,4,1),
+	(141304120,5,1),
+	(141304121,1,1),
+	(141304121,2,1),
+	(141304128,2,0),
+	(141304128,4,0);
+
+/*!40000 ALTER TABLE `student_course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table student_information
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `student_information`;
+
 CREATE TABLE `student_information` (
   `student_number` int(12) NOT NULL COMMENT '学号',
   `student_class` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '班级',
@@ -248,16 +336,24 @@ CREATE TABLE `student_information` (
   CONSTRAINT `fk_stuinfo_student_number` FOREIGN KEY (`student_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of student_information
--- ----------------------------
-INSERT INTO `student_information` VALUES ('141304120', '计科1401');
-INSERT INTO `student_information` VALUES ('141304121', '计科1401');
+LOCK TABLES `student_information` WRITE;
+/*!40000 ALTER TABLE `student_information` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `student_work`
--- ----------------------------
+INSERT INTO `student_information` (`student_number`, `student_class`)
+VALUES
+	(141304120,'计科1401'),
+	(141304121,'计科1401'),
+	(141304128,'计科1401');
+
+/*!40000 ALTER TABLE `student_information` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table student_work
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `student_work`;
+
 CREATE TABLE `student_work` (
   `swork_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '作业ID',
   `swork_title` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '作业题目',
@@ -267,18 +363,24 @@ CREATE TABLE `student_work` (
   PRIMARY KEY (`swork_id`),
   KEY `fk_user_number` (`user_number`),
   CONSTRAINT `fk_user_number` FOREIGN KEY (`user_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=gbk;
+) ENGINE=InnoDB DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of student_work
--- ----------------------------
-INSERT INTO `student_work` VALUES ('1', 'diyicizuoy', 'dasdasdasdasd', null, '141304120');
-INSERT INTO `student_work` VALUES ('3', 'ceshiasdkashdjkhajksh', 'dasdfkjaskldfjhaskldakls', '1476518579', '141304120');
+LOCK TABLES `student_work` WRITE;
+/*!40000 ALTER TABLE `student_work` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `swork_file`
--- ----------------------------
+INSERT INTO `student_work` (`swork_id`, `swork_title`, `swork_content`, `swork_date`, `user_number`)
+VALUES
+	(4,'测试提交作业','这是作业答案测试提交.','1477834256',141304120);
+
+/*!40000 ALTER TABLE `student_work` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table swork_file
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `swork_file`;
+
 CREATE TABLE `swork_file` (
   `file_id` int(12) NOT NULL AUTO_INCREMENT,
   `swork_id` int(12) NOT NULL,
@@ -290,17 +392,15 @@ CREATE TABLE `swork_file` (
   PRIMARY KEY (`file_id`),
   KEY `fk_sworkfile_course_id` (`swork_id`),
   CONSTRAINT `fk_sworkfile_course_id` FOREIGN KEY (`swork_id`) REFERENCES `student_work` (`swork_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of swork_file
--- ----------------------------
-INSERT INTO `swork_file` VALUES ('1', '1', '新建文本文档', 'txt', '1476758930', 'ZJBPLrEZIixTA0ZgupdQlDaeJLcr7dev', '9');
 
--- ----------------------------
--- Table structure for `swork_twork`
--- ----------------------------
+
+# Dump of table swork_twork
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `swork_twork`;
+
 CREATE TABLE `swork_twork` (
   `swork_id` int(11) NOT NULL,
   `twork_id` int(11) NOT NULL,
@@ -313,16 +413,22 @@ CREATE TABLE `swork_twork` (
   CONSTRAINT `fk_st_t` FOREIGN KEY (`twork_id`) REFERENCES `teacher_work` (`twork_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of swork_twork
--- ----------------------------
-INSERT INTO `swork_twork` VALUES ('1', '7', '90', '123123123123', '1476191683');
-INSERT INTO `swork_twork` VALUES ('3', '8', '100', 'test pingyu', '1476576867');
+LOCK TABLES `swork_twork` WRITE;
+/*!40000 ALTER TABLE `swork_twork` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `teacher_course`
--- ----------------------------
+INSERT INTO `swork_twork` (`swork_id`, `twork_id`, `swork_grade`, `swork_comment`, `swork_comment_date`)
+VALUES
+	(4,14,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `swork_twork` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table teacher_course
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `teacher_course`;
+
 CREATE TABLE `teacher_course` (
   `course_id` int(12) unsigned NOT NULL AUTO_INCREMENT COMMENT '课程号',
   `course_name` varchar(255) NOT NULL COMMENT '课程名',
@@ -331,22 +437,52 @@ CREATE TABLE `teacher_course` (
   PRIMARY KEY (`course_id`),
   KEY `fk_te_course` (`teacher_number`),
   CONSTRAINT `fk_te_course` FOREIGN KEY (`teacher_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of teacher_course
--- ----------------------------
-INSERT INTO `teacher_course` VALUES ('1', 'Computer System', 'Computer System', '123456');
-INSERT INTO `teacher_course` VALUES ('2', 'MySQL', 'about MySQL', '123456');
-INSERT INTO `teacher_course` VALUES ('3', 'data structure', 'about data structure', '123457');
-INSERT INTO `teacher_course` VALUES ('4', '数据结构', '数据化啊实打实大苏打', '123456');
-INSERT INTO `teacher_course` VALUES ('5', 'Python', 'Pythondasdasdasdasdasdasda', '123457');
-INSERT INTO `teacher_course` VALUES ('6', '大学英语', '大学bed发货就卡是否', '123456');
+LOCK TABLES `teacher_course` WRITE;
+/*!40000 ALTER TABLE `teacher_course` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `teacher_work`
--- ----------------------------
+INSERT INTO `teacher_course` (`course_id`, `course_name`, `course_content`, `teacher_number`)
+VALUES
+	(1,'操作系统原理','《操作系统原理》<br>\r\n一、主要目标和主要内容：<br>\r\n二、授课教师和授课对象：<br>\r\n三、课程类型和学时学分：<br> \r\n四、教学方式（授课形式和考核方式）：<br>\r\n五、教材与参考书目：',123456),
+	(2,'计算机导论','《计算机导论》是计算机科学与技术等专业的学科导引课程，该课程的教学对象是计算机科学与技术等专业的大一新生，课程开设时间是一年级的第一学期。课程目标是在学生面前展现一幅全景式的计算机学科知识画卷，使学生在入门阶段就对本学科有清晰、明确的认识，在今后的学习过程中不再感到困惑和茫然，从而激发他们对计算机专业的学习兴趣，启发学生对本专业进行系统的思考，帮助并引导学生掌握和运用正确方法，而不在于传授学生具体专业知识。',123456),
+	(3,'data structure','about data structure',123457),
+	(4,'Java程序设计','Java语言是美国SUN公司1995年推出的面向对象的程序设计语言，该语言充分考虑了互联网时代的特点，在设计上具有跨平台性、面向对象、安全等特性，因此一经推出就受到IT界的广泛重视并大量采用，同时也成为教育界进行程序设计教学的一门重要编程语言。',123456),
+	(5,'Python','Pythondasdasdasdasdasdasda',123457),
+	(6,'计算机组成原理','计算机组成原理是计算机应用专业的一门必修课程，在计算机专业教学中处于核心地位，该课的教学内容跨越专业基础和专业课两个层次，具有专业基础课和专业课双重性质。通过本课程的学习使学生掌握计算机各大部件的基本工作原理、设计方法及其计算机整体的互连技术，为培养学生具有硬件系统的开发能力打下一定的基础。为后续学习《微型原理与接口技术》、《计算机系统结构》等专业课程提供必要的基础。',123456);
+
+/*!40000 ALTER TABLE `teacher_course` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table teacher_information
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `teacher_information`;
+
+CREATE TABLE `teacher_information` (
+  `teacher_number` int(12) NOT NULL AUTO_INCREMENT COMMENT '教师号',
+  `teacher_introduction` text COMMENT '个人简介',
+  PRIMARY KEY (`teacher_number`),
+  CONSTRAINT `teacher_information_ibfk_1` FOREIGN KEY (`teacher_number`) REFERENCES `user` (`user_number`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `teacher_information` WRITE;
+/*!40000 ALTER TABLE `teacher_information` DISABLE KEYS */;
+
+INSERT INTO `teacher_information` (`teacher_number`, `teacher_introduction`)
+VALUES
+	(123456,'My name is Peng');
+
+/*!40000 ALTER TABLE `teacher_information` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table teacher_work
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `teacher_work`;
+
 CREATE TABLE `teacher_work` (
   `twork_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '作业ID',
   `twork_title` varchar(255) NOT NULL COMMENT '作业题目',
@@ -354,22 +490,29 @@ CREATE TABLE `teacher_work` (
   `twork_date` varchar(255) NOT NULL COMMENT ' 发布时间',
   `twork_update` varchar(255) DEFAULT NULL,
   `course_id` int(12) unsigned NOT NULL COMMENT '课程号',
+  `twork_deadline` int(11) DEFAULT NULL COMMENT '截止时间',
   PRIMARY KEY (`twork_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `fk_tw_course` FOREIGN KEY (`course_id`) REFERENCES `teacher_course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of teacher_work
--- ----------------------------
-INSERT INTO `teacher_work` VALUES ('7', '第一次作业', '第一次作业第一次作业第一次作业第一次作业第一次作业x', '1475935215', '1476577675', '1');
-INSERT INTO `teacher_work` VALUES ('8', '第二个测试作业', '啊是大家哈就是的好好打输了的话', '1475938377', null, '1');
-INSERT INTO `teacher_work` VALUES ('9', 'MySQL的第一次作业', 'create MySQL table and learn how to query data by select', '1476600257', null, '2');
+LOCK TABLES `teacher_work` WRITE;
+/*!40000 ALTER TABLE `teacher_work` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `twork_file`
--- ----------------------------
+INSERT INTO `teacher_work` (`twork_id`, `twork_title`, `twork_content`, `twork_date`, `twork_update`, `course_id`, `twork_deadline`)
+VALUES
+	(14,'操作系统的第一次作业','操作系统的第一次作业要求测试。。。。。','1477833973',NULL,1,1477958400),
+	(15,'计算机组成原理 的作业','计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业','1477834130',NULL,6,1478044800);
+
+/*!40000 ALTER TABLE `teacher_work` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table twork_file
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `twork_file`;
+
 CREATE TABLE `twork_file` (
   `file_id` int(12) NOT NULL AUTO_INCREMENT,
   `twork_id` int(12) NOT NULL,
@@ -381,18 +524,25 @@ CREATE TABLE `twork_file` (
   PRIMARY KEY (`file_id`),
   KEY `twork_id` (`twork_id`),
   CONSTRAINT `twork_file_ibfk_1` FOREIGN KEY (`twork_id`) REFERENCES `teacher_work` (`twork_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of twork_file
--- ----------------------------
-INSERT INTO `twork_file` VALUES ('1', '7', '新建文本文档', 'txt', '1476708886', 'yEGp6s9NuudKLz2FnACT6VQpfM78X2D5', '5');
-INSERT INTO `twork_file` VALUES ('2', '7', '新建文本文档 (2)', 'txt', '1476925448', 'zbSza9J2mES4xFinsv-bdOu85niwq4zW', '1');
+LOCK TABLES `twork_file` WRITE;
+/*!40000 ALTER TABLE `twork_file` DISABLE KEYS */;
 
--- ----------------------------
--- Table structure for `user`
--- ----------------------------
+INSERT INTO `twork_file` (`file_id`, `twork_id`, `file_name`, `file_extension`, `file_upload_time`, `file_hash`, `file_download_count`)
+VALUES
+	(3,14,'test file','txt',1477834046,'K4rfThBg1yrlWOtBJai9rkKMKohI2eY3',0),
+	(4,15,'test file','txt',1477834136,'K2k4ogP8dwjNxBrik6DSP-3g13OEXXBa',0);
+
+/*!40000 ALTER TABLE `twork_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table user
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `user`;
+
 CREATE TABLE `user` (
   `user_number` int(12) NOT NULL COMMENT '用户ID',
   `user_name` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '姓名',
@@ -401,12 +551,27 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=gbk;
 
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('123456', '彭老师', 'e10adc3949ba59abbe56e057f20f883e', 'bVmjsZqDyl0ATFWDITQRA6el0SHPxpgC');
-INSERT INTO `user` VALUES ('123457', 'teacher2', 'e10adc3949ba59abbe56e057f20f883e', '48mz4slUIBbirnkDnf_Qtqju0MFy6G4B');
-INSERT INTO `user` VALUES ('141304120', 'Sanc', 'e10adc3949ba59abbe56e057f20f883e', 'zlJ4pKv0rW26jOE899-p_Ugi-9PxdhF_');
-INSERT INTO `user` VALUES ('141304121', 'sancs', 'e10adc3949ba59abbe56e057f20f883e', '4QdIbGIC-2aEgC8kVqYyPtfNAndqKMBx');
-INSERT INTO `user` VALUES ('141304122', '小明', 'e10adc3949ba59abbe56e057f20f883e', '4mFd6EmpEvc6DtfOx0i0BboyiEiJ7spw');
-INSERT INTO `user` VALUES ('141304123', 'xiaohua', 'e10adc3949ba59abbe56e057f20f883e', '1Usdguug8j-AynHJ_qgQjtd3mkAeLdd1');
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`user_number`, `user_name`, `user_password`, `user_authKey`)
+VALUES
+	(123456,'彭老师','e10adc3949ba59abbe56e057f20f883e','bVmjsZqDyl0ATFWDITQRA6el0SHPxpgC'),
+	(123457,'teacher2','e10adc3949ba59abbe56e057f20f883e','48mz4slUIBbirnkDnf_Qtqju0MFy6G4B'),
+	(141304120,'Sanc','e10adc3949ba59abbe56e057f20f883e','zlJ4pKv0rW26jOE899-p_Ugi-9PxdhF_'),
+	(141304121,'sancs','e10adc3949ba59abbe56e057f20f883e','4QdIbGIC-2aEgC8kVqYyPtfNAndqKMBx'),
+	(141304122,'小明','e10adc3949ba59abbe56e057f20f883e','4mFd6EmpEvc6DtfOx0i0BboyiEiJ7spw'),
+	(141304123,'xiaohua','e10adc3949ba59abbe56e057f20f883e','1Usdguug8j-AynHJ_qgQjtd3mkAeLdd1'),
+	(141304128,'张永远','e10adc3949ba59abbe56e057f20f883e','pzoOR7bfN0C9vKp-e-DTtaiNi-aasLTL');
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

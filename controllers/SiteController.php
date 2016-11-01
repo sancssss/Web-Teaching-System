@@ -117,6 +117,7 @@ class SiteController extends Controller
                  $auth->assign($userRole, $user->user_number);
                  $identity = User::findOne($user->user_number);
                  Yii::$app->user->login($identity, 0);
+                 return $this->redirect(['/teacher/update-user']);
             }else{
                  $auth = Yii::$app->authManager;
                  $userRole = $auth->getRole('student');

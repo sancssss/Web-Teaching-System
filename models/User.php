@@ -151,4 +151,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(StudentInformation::className(), ['student_number' => 'user_number']);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherInformation()
+    {
+        return $this->hasOne(TeacherInformation::className(), ['teacher_number' => 'user_number']);
+    }
 }

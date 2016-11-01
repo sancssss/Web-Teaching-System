@@ -282,6 +282,20 @@ class TeacherCourseController extends Controller
         $file = CourseFileWithTeacher::find()->where(['file_id' => $fileid])->one();
         return $this->redirect(Url::to('@web/uploads/'.$file->file_hash.'.'.$file->file_extension));
     }
+    
+    /**
+     * 显示全部选课申请（按课程显示，点击进入课程处理）
+     */
+    public function actionUnreadApplication()
+    {
+         $dataProvider = new ActiveDataProvider([
+            'query' => CourseWithTeacher::find()->joinWith('studentCourses')->where(['teacher_number' => Yii::$app->user->getId(), 'student_course.verified' => 0]),
+        ]);
+
+        return $this->render('unread-application', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
    
 
     /**

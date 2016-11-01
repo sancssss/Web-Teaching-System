@@ -124,3 +124,14 @@ a.desc:after {
     background-color: #0481b4;
     color: #fff; }
   
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+	color: #a1e2f7;
+    }
+    
+    .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
+	color: #ffffff;
+    }
+    
+    .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
+        background-color: #a1e2f7;
+    }
