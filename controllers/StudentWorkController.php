@@ -264,7 +264,8 @@ class StudentWorkController extends Controller
         $myWorks = SworkTwork::find()->innerJoinWith('swork')->where(['student_work.user_number' => Yii::$app->user->getId()])->all();
         $allWorks = WorkWithStudent::find()
                 ->innerJoin('student_course', 'student_course.course_id = teacher_work.course_id')
-                ->where(['not in', 'twork_id', $myWorks]);
+                ->where(['not in', 'twork_id', $myWorks])
+                ->andWhere(['student_course.student_number' => Yii::$app->user->getId(), 'student_course.verified' => 1]);
          $dataProvider = new ActiveDataProvider([
            'query' => $allWorks, 
         ]);

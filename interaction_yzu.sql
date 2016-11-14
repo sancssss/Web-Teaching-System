@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.16)
 # Database: interaction_yzu
-# Generation Time: 2016-11-01 10:38:32 +0000
+# Generation Time: 2016-11-14 07:42:37 +0000
 # ************************************************************
 
 
@@ -45,6 +45,7 @@ VALUES
 	('student',141304122,1475569978),
 	('student',141304123,1475570067),
 	('student',141304128,1477835741),
+	('student',1413041202,1478139238),
 	('teacher',123456,1475370417),
 	('teacher',123457,1475480530);
 
@@ -226,10 +227,10 @@ LOCK TABLES `course_notice` WRITE;
 
 INSERT INTO `course_notice` (`notice_id`, `notice_title`, `notice_content`, `notice_date`, `course_id`)
 VALUES
-	(1,'DIYI NOTICE','NOTICE!!! AND NOTICE','1111111',1),
 	(3,'new notice','new notciedhashdlkasdhasdhfasekl;fhjkl;ashfk;ahsfkl;ashdfaKL;','1476971897',1),
 	(4,'测试计算机导论的通知','测试计算机导论的通知测试计算机导论的通知','1477833679',2),
-	(5,'Java通知测试','java通知测试发送','1477833922',4);
+	(5,'Java通知测试','java通知测试发送','1477833922',4),
+	(6,'明天晚上答疑','全体学生6点到31教室','1478150971',7);
 
 /*!40000 ALTER TABLE `course_notice` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -255,11 +256,9 @@ LOCK TABLES `course_notice_broadcast` WRITE;
 
 INSERT INTO `course_notice_broadcast` (`notice_id`, `student_number`, `is_read`)
 VALUES
-	(1,141304120,1),
 	(3,141304120,1),
 	(4,141304120,1),
 	(5,141304120,0),
-	(1,141304121,0),
 	(3,141304121,0),
 	(4,141304121,0);
 
@@ -318,7 +317,8 @@ VALUES
 	(141304121,1,1),
 	(141304121,2,1),
 	(141304128,2,0),
-	(141304128,4,0);
+	(141304128,4,0),
+	(1413041202,4,1);
 
 /*!40000 ALTER TABLE `student_course` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -343,7 +343,8 @@ INSERT INTO `student_information` (`student_number`, `student_class`)
 VALUES
 	(141304120,'计科1401'),
 	(141304121,'计科1401'),
-	(141304128,'计科1401');
+	(141304128,'计科1401'),
+	(1413041202,'计科1401');
 
 /*!40000 ALTER TABLE `student_information` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -370,7 +371,7 @@ LOCK TABLES `student_work` WRITE;
 
 INSERT INTO `student_work` (`swork_id`, `swork_title`, `swork_content`, `swork_date`, `user_number`)
 VALUES
-	(4,'测试提交作业','这是作业答案测试提交.','1477834256',141304120);
+	(5,'测试Java作业测试Java作业测试Java作业','测试Java作业测试Java作业测试Java作业测试Java作业','1478140713',141304120);
 
 /*!40000 ALTER TABLE `student_work` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -418,7 +419,7 @@ LOCK TABLES `swork_twork` WRITE;
 
 INSERT INTO `swork_twork` (`swork_id`, `twork_id`, `swork_grade`, `swork_comment`, `swork_comment_date`)
 VALUES
-	(4,14,NULL,NULL,NULL);
+	(5,16,NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `swork_twork` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -449,7 +450,8 @@ VALUES
 	(3,'data structure','about data structure',123457),
 	(4,'Java程序设计','Java语言是美国SUN公司1995年推出的面向对象的程序设计语言，该语言充分考虑了互联网时代的特点，在设计上具有跨平台性、面向对象、安全等特性，因此一经推出就受到IT界的广泛重视并大量采用，同时也成为教育界进行程序设计教学的一门重要编程语言。',123456),
 	(5,'Python','Pythondasdasdasdasdasdasda',123457),
-	(6,'计算机组成原理','计算机组成原理是计算机应用专业的一门必修课程，在计算机专业教学中处于核心地位，该课的教学内容跨越专业基础和专业课两个层次，具有专业基础课和专业课双重性质。通过本课程的学习使学生掌握计算机各大部件的基本工作原理、设计方法及其计算机整体的互连技术，为培养学生具有硬件系统的开发能力打下一定的基础。为后续学习《微型原理与接口技术》、《计算机系统结构》等专业课程提供必要的基础。',123456);
+	(6,'计算机组成原理','计算机组成原理是计算机应用专业的一门必修课程，在计算机专业教学中处于核心地位，该课的教学内容跨越专业基础和专业课两个层次，具有专业基础课和专业课双重性质。通过本课程的学习使学生掌握计算机各大部件的基本工作原理、设计方法及其计算机整体的互连技术，为培养学生具有硬件系统的开发能力打下一定的基础。为后续学习《微型原理与接口技术》、《计算机系统结构》等专业课程提供必要的基础。',123456),
+	(7,'软件技术基础','这是一门工科非计算机专业的必修课',123456);
 
 /*!40000 ALTER TABLE `teacher_course` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -502,7 +504,9 @@ LOCK TABLES `teacher_work` WRITE;
 INSERT INTO `teacher_work` (`twork_id`, `twork_title`, `twork_content`, `twork_date`, `twork_update`, `course_id`, `twork_deadline`)
 VALUES
 	(14,'操作系统的第一次作业','操作系统的第一次作业要求测试。。。。。','1477833973',NULL,1,1477958400),
-	(15,'计算机组成原理 的作业','计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业','1477834130',NULL,6,1478044800);
+	(15,'计算机组成原理 的作业','计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业计算机组成原理 的作业','1477834130',NULL,6,1478044800),
+	(16,'测试Java作业','测试作业，测试Java作业','1478140679',NULL,4,1478304000),
+	(17,'线性表和队列的不同','请举例说明并用程序实现','1478150913',NULL,7,1478736000);
 
 /*!40000 ALTER TABLE `teacher_work` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -562,7 +566,8 @@ VALUES
 	(141304121,'sancs','e10adc3949ba59abbe56e057f20f883e','4QdIbGIC-2aEgC8kVqYyPtfNAndqKMBx'),
 	(141304122,'小明','e10adc3949ba59abbe56e057f20f883e','4mFd6EmpEvc6DtfOx0i0BboyiEiJ7spw'),
 	(141304123,'xiaohua','e10adc3949ba59abbe56e057f20f883e','1Usdguug8j-AynHJ_qgQjtd3mkAeLdd1'),
-	(141304128,'张永远','e10adc3949ba59abbe56e057f20f883e','pzoOR7bfN0C9vKp-e-DTtaiNi-aasLTL');
+	(141304128,'张永远','e10adc3949ba59abbe56e057f20f883e','pzoOR7bfN0C9vKp-e-DTtaiNi-aasLTL'),
+	(1413041202,'op','e10adc3949ba59abbe56e057f20f883e','hTJ18teJ8PbXyEXGOKjDgXGVQxIqsWuU');
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;

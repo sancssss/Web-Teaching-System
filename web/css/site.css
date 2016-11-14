@@ -123,7 +123,7 @@ a.desc:after {
   .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     background-color: #0481b4;
     color: #fff; }
-  
+  @media (max-width: 768px){
     .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
 	color: #a1e2f7;
     }
@@ -135,3 +135,18 @@ a.desc:after {
     .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
         background-color: #a1e2f7;
     }
+  }
+  
+  @media (max-width: 768px){
+    .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #fff;
+        background-color: #0481b4;
+    }
+  }
+  
+  .jumbotron {
+    padding: 30px 15px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #eee;
+}
