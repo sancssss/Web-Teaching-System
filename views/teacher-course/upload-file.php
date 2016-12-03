@@ -16,7 +16,13 @@ $this->params['breadcrumbs'][] = '上传课件';
 <p>
     文件可多选一次性上传多个
 </p>
-<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+<?php $form = ActiveForm::begin([
+             'options' => ['class' => 'form-horizontal'],
+            'fieldConfig' => [
+            'template' => "{label}<div class=\"col-lg-3 col-md-4\">{input}</div>\n<div class=\"col-lg-8 col-md-7\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-1 col-md-1 control-label'],
+            ],
+    ]) ?>
 
     <?= $form->field($model, 'mutiFiles[]')->fileInput(['multiple' => true]) ?>
 
