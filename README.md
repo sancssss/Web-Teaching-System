@@ -1,6 +1,8 @@
 # Web Teaching System
 ### Based on Yii2 PHP Framework
-***
+##### Deployment environment
+AWS: EC2 + RDS
+http://web-teaching.p1y.me/
 ##### Local development environment
 ***OS X 10.11/nginx 1.11/MySQL 5.7/PHP5.6***
 ##### Development Framework
@@ -30,7 +32,9 @@
 
 # Web教学系统
 ### 基于 Yii2 的web应用
-***
+##### 部署环境
+AWS: EC2 + RDS
+http://web-teaching.p1y.me/
 ##### 开发测试环境
 ***OS X 10.11/nginx 1.11/MySQL 5.7/PHP5.6***
 ##### 开发框架
